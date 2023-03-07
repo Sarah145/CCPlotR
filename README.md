@@ -90,7 +90,7 @@ cc_circos(toy_data, option = 'C', n_top_ints = 35, exp_df = toy_exp)
 This function generates plots showing the interactions between a given pair of cell types. Option A just shows which ligands/receptors are interacting between a pair of cell types and option B also shows the expression of the ligand/receptor genes in each cell type. In both options, the weight of the arrow represents the score of the interaction.
 
 ```R
-cc_arrow(toy_data, cell_types = c('NK', 'CD8 T') n_top_ints = 25)
+cc_arrow(toy_data, cell_types = c('NK', 'CD8 T'), n_top_ints = 25)
 cc_arrow(toy_data, cell_types = c('NK', 'CD8 T'), option = 'B', n_top_ints = 25, exp_df = toy_exp)
 ```
 
