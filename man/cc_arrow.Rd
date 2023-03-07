@@ -33,7 +33,7 @@ cc_arrow(
 This function plots interactions between a pair of cell types
 }
 \examples{
-cc_arrow(toy_data, cell_types = c('B', 'CD8 T'), colours = c(`NK` = 'hotpink', `CD8 T` = 'orange'))
+cc_arrow(toy_data, cell_types = c('B', 'CD8 T'), colours = c(`B` = 'hotpink', `CD8 T` = 'orange'))
 cc_arrow(toy_data, cell_types = c('NK', 'CD8 T'), option = 'B', exp_df = toy_exp, n_top_ints = 10, palette = 'OrRd')
 
 }
