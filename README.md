@@ -24,7 +24,7 @@ For some of the plots, there is an option to also show the expression of the lig
 | B         | ADCY7  | 0.0336   |
 | B         | ADRB2  | 0.0178   |
 
-The package come with with toy datasets (`toy_data`, `toy_exp`) which you can see for examples of input data.
+The package come with toy datasets (`toy_data`, `toy_exp`) which you can see for examples of input data.
 
 --------------------
 
