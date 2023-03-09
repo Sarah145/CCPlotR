@@ -96,3 +96,12 @@ cc_arrow(toy_data, cell_types = c('NK', 'CD8 T'), option = 'B', n_top_ints = 25,
 
 <img src="https://github.com/Sarah145/CCPlotR/blob/main/plots/arrow_plots.png">
 
+#### Sigmoid plot (`cc_sigmoid`)
+
+This function plots a portion of interactions using the `geom_sigmoid` function from the `ggbump` R package to connect ligands in sender cells to receptors in receiver cells.
+
+```R
+cc_sigmoid(toy_data)
+```
+
+<img src="https://github.com/Sarah145/CCPlotR/blob/main/plots/sigmoid.png">
