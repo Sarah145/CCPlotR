@@ -8,14 +8,15 @@ library(forcats)
 #'
 #' This function plots a dotplot
 #' @param cc_df A dataframe with columns 'source', 'target', 'ligand', 'receptor' and 'score'. See `toy_data` for example.
-#' @param option Either 'A' or 'B'. Option A will plot the number of interactions between pairs of cell types, option B will plot the top `n_top_ints` interactions and their scores. 
+#' @param option Either 'A', 'B', 'CellPhoneDB' or 'Liana'. Option A will plot the number of interactions between pairs of cell types, option B will plot the top `n_top_ints` interactions and their scores. The 'CellPhoneDB' and 'Liana' options will generate a dotplot in the style of these popular tools. 
 #' @param n_top_ints The number of top interactions to plot. Only required for option B. 
 #' @export
-#' @import dplyr tidyr ggplot2 ggtext forcats
-#' @importFrom plyr round_any
+#' @import dplyr tidyr ggplot2 ggtext forcats grDevices
+#' @importFrom plyr round_any 
 #' @examples
 #' cc_dotplot(toy_data)
 #' cc_dotplot(toy_data, option = 'B', n_top_ints = 10)
+#' cc_dotplot(toy_data, option = 'Liana', n_top_ints = 15)
 
 cc_dotplot <- function(cc_df, option = 'A', n_top_ints = 30){
   if(option == 'A'){
@@ -55,5 +56,42 @@ cc_dotplot <- function(cc_df, option = 'A', n_top_ints = 30){
             axis.text.y = element_text(colour = 'black'),
             axis.text.x = element_markdown(colour = 'black', angle = 90, hjust = 1, vjust = 0.5),
             axis.title.x = element_markdown())
-  } else {print('option must be either A or B')}
+  } else if(option == 'CellPhoneDB'){
+    input_df <- cc_df %>% slice_max(order_by = score, n = n_top_ints) %>%
+      mutate(lr_pair = factor(paste0(ligand, '_', receptor)), 
+             cell_pair = factor(paste0(source, '|', target))) %>%
+      arrange(score) %>%
+      mutate(lr_pair = fct_inorder(lr_pair))
+    pal <- c('#000000', '#3f008d', '#4923a9', '#ddf500', '#fa7200', '#ef000f')
+    brks <- scales::pretty_breaks(n = 4)(c(round_any(min(input_df$score), 1, f = floor), round_any(max(input_df$score), 1, f = ceiling)))
+    ggplot(input_df, aes(x = cell_pair, y = lr_pair, col = score, size = score)) +
+      geom_point() +
+      scale_colour_gradientn(colours = pal) +
+      scale_size(range = c(2,6), limits = c(min(brks), max(brks)), breaks = rev(brks), name = 'Score')  +
+      guides(colour = 'none', size = guide_legend(override.aes = list(colour = colorRampPalette(pal)(length(brks))))) +
+      theme_linedraw(base_size = 14) +
+      theme(axis.text = element_text(colour = 'black'),
+            axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
+            axis.title = element_blank(),
+            panel.grid = element_blank(),
+            legend.position = 'bottom')
+  } else if(option == 'Liana'){
+    input_df <- cc_df %>% slice_max(order_by = score, n = n_top_ints) %>%
+      mutate(lr_pair = factor(paste(ligand, '->', receptor))) %>%
+      arrange(score) %>%
+      mutate(lr_pair = fct_inorder(lr_pair))
+    brks <- scales::pretty_breaks(n = 4)(c(round_any(min(input_df$score), 1, f = floor), round_any(max(input_df$score), 1, f = ceiling)))
+    ggplot(input_df, aes(x = target, y = lr_pair, col = score, size = score)) +
+      geom_point() +
+      scale_size(range = c(2,6), limits = c(min(brks), max(brks)), breaks = rev(brks), name = 'Score')  +
+      scale_colour_viridis_c(option = 'D', limits = c(min(brks), max(brks)), name = 'Score',  breaks = brks, direction = -1) +
+      guides(colour = 'none', size = guide_legend(override.aes = list(colour = viridis::viridis(n = length(brks), direction = 1)))) +
+      labs(title = 'Source', x = 'Target', y = 'Interactions (Ligand -> Receptor)') +
+      facet_wrap(~source) +
+      theme_bw(base_size = 14) +
+      theme(strip.background = element_rect(fill = 'white'),
+            axis.text.x = element_text(colour = '#E69F00', face = "bold"),
+            plot.title = element_text(hjust = 0.5))
+  }
+  else {print("option must be either 'A', 'B', 'CellPhoneDB' or 'Liana'")}
 }

@@ -1,31 +1,75 @@
 library(dplyr)
 library(ggplot2)
 library(ggraph)
+library(igraph)
+library(scatterpie)
 
 #' Network Plot Function
 #'
 #' This function plots a network of representing the number of interactions between cell types
 #' @param cc_df A dataframe with columns 'source', 'target', 'ligand', 'receptor' and 'score'. See `toy_data` for example.
+#' @param option Either 'A' or 'B'. Option A will plot the number of interactions between pairs of cell types, option B will plot the top `n_top_ints` interactions and their scores. 
+#' @param n_top_ints The number of top interactions to plot. Only required for option B. 
 #' @param colours A vector of colours for each cell type. Default is `paletteMartin()`, a colourblind-friendly palette.
 #' @export
-#' @import dplyr ggplot2 ggraph
-#' @importFrom igraph graph_from_data_frame
+#' @import dplyr ggplot2 ggraph scatterpie
+#' @importFrom igraph graph_from_data_frame layout_with_kk V
 #' @examples
 #' cc_network(toy_data)
-#' cc_network(toy_data, colours = c('hotpink', 'orange', 'cornflowerblue'))
+#' cc_network(toy_data, colours = c('orange', 'cornflowerblue', 'hotpink'), option = 'B')
 
-cc_network <- function(cc_df, colours = paletteMartin()){
-  graph <- graph_from_data_frame(cc_df %>% group_by(source, target) %>% tally())
-  ggraph(graph, layout = 'linear', circular = T) + 
-    geom_edge_loop(aes(edge_width = n, color = as.factor(from)), 
-                   arrow = arrow(length = unit(5, 'mm'), angle = 20, type = 'closed'), 
-                   show.legend = F, alpha = 0.8) +
-    geom_edge_fan(aes(edge_width = n, color = as.factor(from)), 
-                  arrow = arrow(length = unit(5, 'mm'), angle = 20, type = 'closed'), 
-                  end_cap = circle(3, 'mm'), 
-                  show.legend = F, alpha = 0.8) +
-    geom_node_label(aes(label = name), fill = alpha('white', 0.3), size = 6, nudge_y = 0.1, fontface = 'bold') +
-    scale_edge_color_manual(values = colours) +
-    scale_edge_width(range = c(0.5,4)) +
-    theme_void()
+cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_ints = 20){
+  if(option == 'A'){
+    graph <- graph_from_data_frame(cc_df %>% group_by(source, target) %>% tally())
+    ggraph(graph, layout = 'linear', circular = T) + 
+      geom_edge_loop(aes(edge_width = n, color = as.factor(from)), end_cap = circle(20, 'pt'),
+                     arrow = arrow(length = unit(5, 'mm'), angle = 20, type = 'closed'), 
+                     show.legend = F) +
+      geom_edge_fan(aes(edge_width = n, color = as.factor(from)), 
+                    arrow = arrow(length = unit(5, 'mm'), angle = 20, type = 'closed'), 
+                    end_cap = circle(20, 'pt'), 
+                    show.legend = F) +
+      geom_node_label(aes(label = name, col = name), 
+                      #fill = alpha('white', 0.3), 
+                      size = 6, fontface = 'bold', show.legend = F, label.size = 2) +
+      geom_node_label(aes(label = name), 
+                      #fill = alpha('white', 0.3), 
+                      size = 6, fontface = 'bold', show.legend = F, label.size = 0, col = 'black') +
+      scale_edge_colour_manual(values = ifelse(rep(is.null(names(colours)),length(colours)), colours, unname(colours[sort(unique(cc_df$source))]))) +
+      scale_colour_manual(values = colours) +
+      scale_edge_width(range = c(0.5,4)) +
+      theme_void(base_size = 14) +
+      coord_cartesian(clip = 'off')}
+  else if(option == 'B'){
+    input_df <- cc_df %>% slice_max(order_by = score, n = n_top_ints)
+    graph <- graph_from_data_frame(input_df %>% select(ligand, receptor, score))
+    xy <- layout_with_kk(graph)
+    igraph::V(graph)$x <- xy[, 1]
+    igraph::V(graph)$y <- xy[, 2]
+    graph_df <- igraph::as_data_frame(graph, 'vertices')
+    genes <- unique(c(input_df$ligand, input_df$receptor))
+    celltypes <- unique(c(input_df$source, input_df$target))
+    for(i in genes){
+      for(j in celltypes){
+        graph_df[i,j] <- sum((input_df$source == j & input_df$ligand == i) | (input_df$target == j & input_df$receptor == i))
+      }
+    }
+    ggraph(graph, "manual", x = V(graph)$x, y = V(graph)$y) +
+      geom_edge_loop(arrow = arrow(length = unit(2.5, 'mm'), angle = 20, type = 'closed'), 
+                     show.legend = F, check_overlap = T, end_cap = circle(20, 'pt')) +
+      geom_edge_fan(arrow = arrow(length = unit(2.5, 'mm'), angle = 20, type = 'closed'), 
+                    end_cap = circle(20, 'pt'), check_overlap = T,
+                    show.legend = F) +
+      geom_scatterpie(
+        cols = celltypes,
+        data = graph_df,
+        colour = NA,
+        pie_scale = 2.75
+      ) + 
+      geom_node_label(aes(label = name), fill = alpha('white', 0.7), size = 4, fontface = 'bold', repel = F) +
+      scale_fill_manual(values = colours, name = 'Cell type') +
+      coord_fixed(clip='off') +
+      theme_graph(base_size = 14) +
+      theme(legend.position = "bottom")
+  } else {print('option must be either A or B')}
 }
