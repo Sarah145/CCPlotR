@@ -65,7 +65,8 @@ cc_circos <- function(cc_df, option = 'A', n_top_ints = 30, exp_df = NULL, cell_
                    directional = 1, group = grp, link.sort = TRUE, link.decreasing = F, diffHeight = 0.005, 
                    direction.type = c("arrows"),link.arr.type = "triangle", annotationTrack = c(), 
                    preAllocateTracks = list(list(track.height = 0.175),list(track.height = 0.05)), 
-                   big.gap = 3, transparency = 1, link.arr.lwd = arr_wd, link.arr.col = link_cols)
+                   big.gap = 3, transparency = 1, link.arr.lwd = arr_wd, link.arr.col = link_cols, 
+                   link.arr.length = 0.4, link.arr.width = 0.35)
       circos.track(track.index = 1, panel.fun = function(x, y) {
         circos.text(CELL_META$xcenter, CELL_META$ylim[1], str_extract(CELL_META$sector.index, '[^|]+$'),
                     facing = "clockwise", niceFacing = TRUE, adj = c(0, 0.55), cex = 1.3)}, bg.border = NA) 
@@ -119,7 +120,7 @@ cc_circos <- function(cc_df, option = 'A', n_top_ints = 30, exp_df = NULL, cell_
                      directional = 1, group = grp, link.sort = TRUE, link.decreasing = F, diffHeight = 0.005, 
                      direction.type = c("arrows"),link.arr.type = "triangle", annotationTrack = c(),
                      preAllocateTracks = list(list(track.height = 0.175),list(track.height = 0.05),list(track.height = 0.045)),                
-                     big.gap = 3, transparency = 1, link.arr.lwd = arr_wd, link.arr.col = 'black')
+                     big.gap = 3, transparency = 1, link.arr.lwd = arr_wd, link.arr.col = 'black', link.arr.length = 0.4, link.arr.width = 0.35)
         circos.track(track.index = 1, panel.fun = function(x, y) {
           circos.text(CELL_META$xcenter, CELL_META$ylim[1], str_extract(CELL_META$sector.index, '[^|]+$'),
                       facing = "clockwise", niceFacing = TRUE, adj = c(0, 0.55), cex = 1.3)}, bg.border = NA) 
