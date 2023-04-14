@@ -82,8 +82,8 @@ This function can generate three different types of circos plots. Option A gener
 
 ```R
 cc_circos(toy_data)
-cc_circos(toy_data, option = 'B', n_top_ints = 25)
-cc_circos(toy_data, option = 'C', n_top_ints = 35, exp_df = toy_exp)
+cc_circos(toy_data, option = 'B', n_top_ints = 10)
+cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), palette = 'PuRd')
 ```
 
 <img src="https://github.com/Sarah145/CCPlotR/blob/main/plots/circos_plots.png">
