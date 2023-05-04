@@ -35,7 +35,7 @@ cc_sigmoid <- function(cc_df, n_top_ints = 20, colours = paletteMartin()){
     geom_point(aes(col = target, x = 1, y = as.factor(y2)), show.legend = F, pch = 15, size = 7) +
     scale_x_continuous(limits = c(-0.5, 1.5)) +
     scale_y_discrete(limits = as.factor(seq(max(source_ligands, target_receptors), 0, -1))) +
-    scale_colour_manual(values = colours, breaks = unique(c(input_df$source, input_df$receptor)), name = 'Cell type') +
+    scale_colour_manual(values = colours, breaks = unique(c(input_df$source, input_df$target)), name = 'Cell type') +
     theme_void(base_size = 14) +
     theme(legend.position = 'bottom',
           plot.margin = margin(t = 20)) +
