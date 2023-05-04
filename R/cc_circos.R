@@ -22,7 +22,7 @@ library(grid)
 
 cc_circos <- function(cc_df, option = 'A', n_top_ints = 30, exp_df = NULL, cell_cols = NULL, palette = 'BuPu'){
   if(option == 'A'){
-    input_df <- toy_data %>% mutate(source = factor(source), target = factor(target)) %>% group_by(source, target) %>% tally()
+    input_df <- cc_df %>% mutate(source = factor(source), target = factor(target)) %>% group_by(source, target) %>% tally()
     if(is.null(cell_cols)){
       cell_cols <- setNames(paletteMartin(n = length(unique(c(input_df$source, input_df$target)))), unique(c(input_df$source, input_df$target)))} 
     circlize_plot <- function(){
