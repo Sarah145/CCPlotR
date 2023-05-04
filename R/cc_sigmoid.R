@@ -27,7 +27,7 @@ cc_sigmoid <- function(cc_df, n_top_ints = 20, colours = paletteMartin()){
   
   ggplot(input_df, aes(y = as.factor(y1), yend = as.factor(y2), x = 0, xend = 1)) +
     geom_sigmoid() +
-    annotate('text', x = c(0,1), y = as.factor(0), label = c('Sender\n', 'Reciever\n'), size = 6) +
+    annotate('text', x = c(0,1), y = as.factor(0), label = c('Sender\n', 'Receiver\n'), size = 6) +
     annotate('text', x = c(-0.5,1.5), y = as.factor(round(max(c(source_ligands, target_receptors))/2)), label = c('Ligand', 'Receptor'), angle = c(90, 270), size = 6) +
     annotate('text', x = -0.05, y = as.factor(source_ligands), label = str_extract(names(source_ligands), '[^|]+$'), hjust = 1) +
     annotate('text', x = 1.05, y = as.factor(target_receptors), label = str_extract(names(target_receptors), '[^|]+$'), hjust = 0) +
