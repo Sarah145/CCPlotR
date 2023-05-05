@@ -4,6 +4,8 @@ library(ggplot2)
 library(ggtext)
 library(forcats)
 library(tibble)
+library(ggh4x)
+library(patchwork)
 
 #' Heatmap Function
 #'
@@ -12,8 +14,7 @@ library(tibble)
 #' @param option Either 'A', 'B', 'CellPhoneDB' or 'Liana'. Option A will plot the number of interactions between pairs of cell types, option B will plot the top `n_top_ints` interactions and their scores. The 'CellPhoneDB' and 'Liana' options will generate a heatmap in the style of these popular tools.  
 #' @param n_top_ints The number of top interactions to plot. Only required for option B. 
 #' @export
-#' @import dplyr tidyr ggplot2 ggtext forcats tibble
-#' @importFrom liana liana_heatmap
+#' @import dplyr tidyr ggplot2 ggtext forcats tibble ggh4x patchwork
 #' @examples
 #' cc_heatmap(toy_data)
 #' cc_heatmap(toy_data, option = 'B', n_top_ints = 10)
@@ -75,10 +76,55 @@ cc_heatmap <- function(cc_df, option = 'A', n_top_ints = 30){
             legend.key.width = unit(3, 'lines'),
             legend.position = 'bottom')
   } else if(option == 'Liana'){
-    input_mat <- as.matrix(cc_df %>% mutate(source = factor(source), target = factor(target)) %>% 
-      group_by(source, target, .drop = F) %>% tally() %>% 
-      pivot_wider(names_from = source, values_from = n) %>%
-      column_to_rownames(var = 'target'))
-    liana::liana_heatmap(input_mat)
+    # input_mat <- as.matrix(cc_df %>% mutate(source = factor(source), target = factor(target)) %>% 
+    #   group_by(source, target, .drop = F) %>% tally() %>% 
+    #   pivot_wider(names_from = source, values_from = n) %>%
+    #   column_to_rownames(var = 'target'))
+    # liana::liana_heatmap(input_mat)
+    col_func <- grDevices::colorRampPalette((RColorBrewer::brewer.pal(n = 8, name = 'Dark2')))
+    
+    input_df <- cc_df %>% mutate(source = factor(source), target = factor(target)) %>% 
+      group_by(source, target, .drop = F) %>% tally()
+    strip <- strip_themed(background_x = elem_list_rect(fill = col_func(length(unique(input_df$target)))),
+                          background_y = elem_list_rect(fill = col_func(length(unique(input_df$source)))))
+    p1 <- ggplot(input_df %>% group_by(source) %>% mutate(total = sum(n)), aes(x = source, y = total, fill = source)) +
+      geom_col(show.legend = F) +
+      scale_fill_manual(values = col_func(length(unique(input_df$source)))) +
+      scale_y_continuous(expand = c(0,0)) +
+      theme_classic(base_size = 12) +
+      theme(axis.line.x = element_blank(),
+            axis.text.x = element_blank(),
+            axis.text.y = element_text(colour = 'black'),
+            axis.title = element_blank(),
+            axis.ticks.x = element_blank(),
+            plot.margin = margin(t=0,b=0))
+    
+    p2 <- ggplot(input_df %>% group_by(target) %>% mutate(total = sum(n)), aes(y = target, x = total, fill = target)) +
+      geom_col(show.legend = F) +
+      scale_fill_manual(values = col_func(length(unique(input_df$target)))) +
+      scale_x_continuous(expand = c(0,0)) +
+      theme_classic(base_size = 12) +
+      theme(axis.line.y = element_blank(),
+            axis.text.y = element_blank(),
+            axis.text.x = element_text(colour = 'black', angle = 90, hjust = 1, vjust = 0.5),
+            axis.title = element_blank(),
+            axis.ticks.y = element_blank(),
+            plot.margin = margin(l=0, r=0))
+    p3 <- ggplot(input_df, aes(x = target, y = source, fill = n)) +
+      geom_tile() +
+      scale_x_discrete(expand = c(0,0), name = 'Receiver (Cell types)') +
+      scale_y_discrete(expand = c(0,0), name = 'Sender (Cell types)') +
+      scale_fill_distiller(palette = 'PuRd', direction = 1, name = 'Frequency') +
+      facet_grid2(source~target, scales = 'free', switch = 'both', strip = strip) +
+      theme_minimal(base_size = 14) +
+      theme(panel.grid = element_blank(),
+            axis.text = element_text(colour = 'black'),
+            legend.title = element_text(face = 'bold'),
+            axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
+            strip.background = element_rect(colour = 'transparent'),
+            strip.text = element_text(colour = 'transparent', margin = margin(0,0,0,0, "cm")),
+            panel.spacing = unit(0, 'lines'),
+            plot.margin = margin(t = 0, r = 0))
+    (p1 + plot_spacer() + plot_layout(widths = c(1.7, 0.3)))/(p3 + p2 + plot_layout(widths = c(1.7, 0.3))) + plot_layout(heights = c(0.3, 1.7), guides = 'collect')
   } else {print("option must be either 'A', 'B', 'CellPhoneDB' or 'Liana'")}
 }

@@ -10,7 +10,8 @@ cc_circos(
   n_top_ints = 30,
   exp_df = NULL,
   cell_cols = NULL,
-  palette = "BuPu"
+  palette = "BuPu",
+  cex = 1.5
 )
 }
 \arguments{
@@ -25,12 +26,14 @@ cc_circos(
 \item{cell_cols}{A named vector of colours for each cell type. Default uses \code{paletteMartin()}, a colourblind-friendly palette.}
 
 \item{palette}{Which colour palette to use to show the mean expression. Should be one of the RColorBrewer sequential palettes.}
+
+\item{cex}{Determines text size}
 }
 \description{
 This function creates a circos plot
 }
 \examples{
 cc_circos(toy_data)
-cc_circos(toy_data, option = 'B', n_top_ints = 10)
-cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), palette = 'PuRd')
+cc_circos(toy_data, option = 'B', n_top_ints = 10, cex = 0.5)
+cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), palette = 'PuRd', cex = 0.5)
 }

@@ -13,21 +13,22 @@ library(grid)
 #' @param exp_df A dataframe containing the mean expression values for each ligand/receptor in each cell type. See `toy_exp` for an example. Only required for option C.
 #' @param cell_cols A named vector of colours for each cell type. Default uses `paletteMartin()`, a colourblind-friendly palette.
 #' @param palette Which colour palette to use to show the mean expression. Should be one of the RColorBrewer sequential palettes.
+#' @param cex Determines text size
 #' @export
 #' @import dplyr circlize ComplexHeatmap stringr grid
 #' @examples
 #' cc_circos(toy_data)
-#' cc_circos(toy_data, option = 'B', n_top_ints = 10)
-#' cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), palette = 'PuRd')
+#' cc_circos(toy_data, option = 'B', n_top_ints = 10, cex = 0.5)
+#' cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), palette = 'PuRd', cex = 0.5)
 
-cc_circos <- function(cc_df, option = 'A', n_top_ints = 30, exp_df = NULL, cell_cols = NULL, palette = 'BuPu'){
+cc_circos <- function(cc_df, option = 'A', n_top_ints = 30, exp_df = NULL, cell_cols = NULL, palette = 'BuPu', cex = 1.5){
   if(option == 'A'){
     input_df <- cc_df %>% mutate(source = factor(source), target = factor(target)) %>% group_by(source, target) %>% tally()
     if(is.null(cell_cols)){
       cell_cols <- setNames(paletteMartin(n = length(unique(c(input_df$source, input_df$target)))), unique(c(input_df$source, input_df$target)))} 
     circlize_plot <- function(){
       circos.clear()
-      par(cex = 1.5)
+      par(cex = cex)
       chordDiagram(input_df, scale = F, grid.col = cell_cols, 
                    annotationTrack = c("grid", "name"), directional = 1, direction.type = c("arrows", 'diffHeight'), link.arr.type = 'big.arrow', link.arr.length = 0.1, diffHeight = -mm_h(0.5),preAllocateTracks = list(
                      track.height = mm_h(10),
@@ -59,7 +60,7 @@ cc_circos <- function(cc_df, option = 'A', n_top_ints = 30, exp_df = NULL, cell_
       background = cell_cols[unique(c(input_df$source, input_df$target))])
     circlize_plot <- function(){
       circos.clear()
-      par(cex = 0.5)
+      par(cex = cex)
       chordDiagram(input_df %>%
                      select(source_lig, target_rec, score), 
                    directional = 1, group = grp, link.sort = TRUE, link.decreasing = F, diffHeight = 0.005, 
@@ -114,7 +115,7 @@ cc_circos <- function(cc_df, option = 'A', n_top_ints = 30, exp_df = NULL, cell_
       )
       circlize_plot <- function(){
         circos.clear()
-        par(cex = 0.5)
+        par(cex = cex)
         chordDiagram(input_df %>%
                        select(source_lig, target_rec, score), 
                      directional = 1, group = grp, link.sort = TRUE, link.decreasing = F, diffHeight = 0.005, 
