@@ -21,7 +21,7 @@ library(grid)
 #' cc_circos(toy_data, option = 'B', n_top_ints = 10, cex = 0.5)
 #' cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), palette = 'PuRd', cex = 0.5)
 
-cc_circos <- function(cc_df, option = 'A', n_top_ints = 30, exp_df = NULL, cell_cols = NULL, palette = 'BuPu', cex = 1.5){
+cc_circos <- function(cc_df, option = 'A', n_top_ints = 15, exp_df = NULL, cell_cols = NULL, palette = 'BuPu', cex = 1){
   if(option == 'A'){
     input_df <- cc_df %>% mutate(source = factor(source), target = factor(target)) %>% group_by(source, target) %>% tally()
     if(is.null(cell_cols)){
@@ -56,6 +56,8 @@ cc_circos <- function(cc_df, option = 'A', n_top_ints = 30, exp_df = NULL, cell_
       labels = unique(c(input_df$source, input_df$target)),
       title = "Cell type",
       type = "points",
+      title_gp = gpar(fontsize = 14*cex),
+      labels_gp = gpar(fontsize = 12*cex),
       legend_gp = gpar(col = "transparent"),
       background = cell_cols[unique(c(input_df$source, input_df$target))])
     circlize_plot <- function(){
@@ -102,14 +104,14 @@ cc_circos <- function(cc_df, option = 'A', n_top_ints = 30, exp_df = NULL, cell_
         labels = unique(c(input_df$source, input_df$target)),
         title = "Cell type",
         type = "points",
-        title_gp = gpar(fontsize = 7),
-        labels_gp = gpar(fontsize = 6),
+        title_gp = gpar(fontsize = 14*cex),
+        labels_gp = gpar(fontsize = 12*cex),
         legend_gp = gpar(col = "transparent"),
         background = cell_cols[unique(c(input_df$source, input_df$target))],
         direction = 'horizontal')
       
-      lgd2 <- Legend(title_gp = gpar(fontsize = 7),
-                     labels_gp = gpar(fontsize = 6),
+      lgd2 <- Legend(title_gp = gpar(fontsize = 14*cex),
+                     labels_gp = gpar(fontsize = 12*cex),
                      direction = 'horizontal', at = brks, 
                      col_fun = gene_col_fun, title = 'Mean exp.'
       )

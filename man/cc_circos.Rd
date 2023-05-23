@@ -7,11 +7,11 @@
 cc_circos(
   cc_df,
   option = "A",
-  n_top_ints = 30,
+  n_top_ints = 15,
   exp_df = NULL,
   cell_cols = NULL,
   palette = "BuPu",
-  cex = 1.5
+  cex = 1
 )
 }
 \arguments{

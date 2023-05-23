@@ -42,7 +42,7 @@ cc_arrow <- function(cc_df, cell_types, option = 'A', n_top_ints = 15, exp_df = 
     ypos_2 <- scale_func(ypos_2)
     
     xpos_1 <- -((ypos_1-scaler/2)-0.5)**2
-    xpos_2 <- (((ypos_2-scaler/2)-0.5)**2)+max(abs(xpos_1))*3
+    xpos_2 <- (((ypos_2-scaler/2)-0.5)**2)+max(abs(xpos_1))*5
     
     input_df <- input_df %>% mutate(ypos1 = case_when(
       source == cell_types[1] ~ ypos_1[ligand],
@@ -69,10 +69,10 @@ cc_arrow <- function(cc_df, cell_types, option = 'A', n_top_ints = 15, exp_df = 
       geom_segment(data = input_df %>% filter(source == cell_types[2]), 
                    aes(x = xpos2, xend = xpos1, y = ypos2, yend = ypos1, linewidth = score),
                    arrow = arrow(length = unit(3.5, 'mm'), type = 'closed'), show.legend = F) +
-      annotate('text', x = c(min(xpos_1) - xrange/8,  max(xpos_2) + xrange/8), y = scaler/2, 
+      annotate('text', x = c(min(xpos_1) - xrange/6.5,  max(xpos_2) + xrange/6.5), y = scaler/2, 
                label = cell_types, size = 6, angle = c(90,270), col = colours[cell_types]) +
-      annotate('text', x = xpos_1 - xrange/22, y = ypos_1, label = cell1_lr, hjust = 1) +
-      annotate('text', x = xpos_2 + xrange/22, y = ypos_2, label = cell2_lr, hjust = 0) +
+      annotate('text', x = xpos_1 - xrange/15, y = ypos_1, label = cell1_lr, hjust = 1) +
+      annotate('text', x = xpos_2 + xrange/15, y = ypos_2, label = cell2_lr, hjust = 0) +
       scale_linewidth(range = c(0.1,1.2)) +
       scale_y_reverse() +
       scale_x_continuous(limits = c(min(xpos_1) - xrange/5, max(xpos_2) + xrange/5)) +
@@ -104,7 +104,7 @@ cc_arrow <- function(cc_df, cell_types, option = 'A', n_top_ints = 15, exp_df = 
       ypos_2 <- scale_func(ypos_2)
       
       xpos_1 <- -((ypos_1-scaler/2)-0.5)**2
-      xpos_2 <- (((ypos_2-scaler/2)-0.5)**2)+max(abs(xpos_1))*3
+      xpos_2 <- (((ypos_2-scaler/2)-0.5)**2)+max(abs(xpos_1))*5
       
       gene_df <- as.data.frame(exp_df %>% mutate(cell_gene = paste0(cell_type, '|', gene))) %>%
         filter(cell_type %in% cell_types, gene %in% unique(c(cell1_lr, cell2_lr)))
@@ -136,7 +136,7 @@ cc_arrow <- function(cc_df, cell_types, option = 'A', n_top_ints = 15, exp_df = 
         geom_segment(data = input_df %>% filter(source == cell_types[2]), 
                      aes(x = xpos2, xend = xpos1, y = ypos2, yend = ypos1, linewidth = score),
                      arrow = arrow(length = unit(3.5, 'mm'), type = 'closed'), show.legend = F) +
-        annotate('text', x = c(min(xpos_1) - xrange/8,  max(xpos_2) + xrange/8), y = scaler/2, label = cell_types, size = 6, angle = c(90,270)) +
+        annotate('text', x = c(min(xpos_1) - xrange/6.5,  max(xpos_2) + xrange/6.5), y = scaler/2, label = cell_types, size = 6, angle = c(90,270)) +
         annotate('text', x = xpos_1 - xrange/15, y = ypos_1, label = cell1_lr, hjust = 1) +
         annotate('text', x = xpos_2 + xrange/15, y = ypos_2, label = cell2_lr, hjust = 0) +
         scale_fill_stepsn(colours = RColorBrewer::brewer.pal(8, palette), 
