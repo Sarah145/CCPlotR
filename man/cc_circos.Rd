@@ -11,7 +11,8 @@ cc_circos(
   exp_df = NULL,
   cell_cols = NULL,
   palette = "BuPu",
-  cex = 1
+  cex = 1,
+  show_legend = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ cc_circos(
 \item{palette}{Which colour palette to use to show the mean expression. Should be one of the RColorBrewer sequential palettes.}
 
 \item{cex}{Determines text size}
+
+\item{show_legend}{TRUE or FALSE - whether to add legend or not. Only required for options B and C.}
 }
 \description{
 This function creates a circos plot

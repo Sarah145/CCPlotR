@@ -14,6 +14,7 @@ library(grid)
 #' @param cell_cols A named vector of colours for each cell type. Default uses `paletteMartin()`, a colourblind-friendly palette.
 #' @param palette Which colour palette to use to show the mean expression. Should be one of the RColorBrewer sequential palettes.
 #' @param cex Determines text size
+#' @param show_legend TRUE or FALSE - whether to add legend or not. Only required for options B and C.
 #' @export
 #' @import dplyr circlize ComplexHeatmap stringr grid
 #' @examples
@@ -21,7 +22,7 @@ library(grid)
 #' cc_circos(toy_data, option = 'B', n_top_ints = 10, cex = 0.5)
 #' cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), palette = 'PuRd', cex = 0.5)
 
-cc_circos <- function(cc_df, option = 'A', n_top_ints = 15, exp_df = NULL, cell_cols = NULL, palette = 'BuPu', cex = 1){
+cc_circos <- function(cc_df, option = 'A', n_top_ints = 15, exp_df = NULL, cell_cols = NULL, palette = 'BuPu', cex = 1, show_legend = TRUE){
   if(option == 'A'){
     input_df <- cc_df %>% mutate(source = factor(source), target = factor(target)) %>% group_by(source, target) %>% tally()
     if(is.null(cell_cols)){
@@ -76,7 +77,9 @@ cc_circos <- function(cc_df, option = 'A', n_top_ints = 15, exp_df = NULL, cell_
       for(l in unique(str_extract(segments, '[^|]+'))){
         highlight.sector(segments[str_detect(segments, paste0('^', l))], track.index = 2, col = cell_cols[l])
       }
-      draw(lgd, just = c("left", "bottom"), x = unit(5, "mm"), y = unit(5, "mm"))
+      if(show_legend == TRUE){
+        draw(lgd, just = c("left", "bottom"), x = unit(5, "mm"), y = unit(5, "mm"))
+        }
       circos.clear()
     }} else if(option == 'C'){
       if(is.null(exp_df)){print('exp_df is required for option C')}
@@ -134,7 +137,9 @@ cc_circos <- function(cc_df, option = 'A', n_top_ints = 15, exp_df = NULL, cell_
           circos.rect(CELL_META$xlim[1], CELL_META$ylim[1], CELL_META$xlim[2], CELL_META$ylim[2],
                       sector.index = CELL_META$sector.index, col = inner.cols[CELL_META$sector.index])
         }, bg.border = NA)
-        draw(packLegend(lgd1, lgd2, direction = "vertical"), just = c("left", "bottom"), x = unit(4.75, "mm"), y = unit(4.75, "mm"))
+        if(show_legend == TRUE){
+          draw(packLegend(lgd1, lgd2, direction = "vertical"), just = c("left", "bottom"), x = unit(4.75, "mm"), y = unit(4.75, "mm"))
+          }
         circos.clear()
       }
     } else {print('option must be either A, B or C')}
