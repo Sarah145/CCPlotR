@@ -15,6 +15,7 @@ library(grid)
 #' @param palette Which colour palette to use to show the mean expression. Should be one of the RColorBrewer sequential palettes.
 #' @param cex Determines text size
 #' @param show_legend TRUE or FALSE - whether to add legend or not. Only required for options B and C.
+#' @param scale TRUE or FALSE - whether to scale each sector to same width. Only required for options B and C.
 #' @export
 #' @import dplyr circlize ComplexHeatmap stringr grid
 #' @examples
@@ -22,7 +23,7 @@ library(grid)
 #' cc_circos(toy_data, option = 'B', n_top_ints = 10, cex = 0.5)
 #' cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), palette = 'PuRd', cex = 0.5)
 
-cc_circos <- function(cc_df, option = 'A', n_top_ints = 15, exp_df = NULL, cell_cols = NULL, palette = 'BuPu', cex = 1, show_legend = TRUE){
+cc_circos <- function(cc_df, option = 'A', n_top_ints = 15, exp_df = NULL, cell_cols = NULL, palette = 'BuPu', cex = 1, show_legend = TRUE, scale = F){
   if(option == 'A'){
     input_df <- cc_df %>% mutate(source = factor(source), target = factor(target)) %>% group_by(source, target) %>% tally()
     if(is.null(cell_cols)){
@@ -66,7 +67,7 @@ cc_circos <- function(cc_df, option = 'A', n_top_ints = 15, exp_df = NULL, cell_
       par(cex = cex)
       chordDiagram(input_df %>%
                      select(source_lig, target_rec, score), 
-                   directional = 1, group = grp, link.sort = TRUE, link.decreasing = F, diffHeight = 0.005, 
+                   directional = 1, group = grp, link.sort = F, scale = scale, diffHeight = 0.005, 
                    direction.type = c("arrows"),link.arr.type = "triangle", annotationTrack = c(), 
                    preAllocateTracks = list(list(track.height = 0.175),list(track.height = 0.05)), 
                    big.gap = 3, transparency = 1, link.arr.lwd = arr_wd, link.arr.col = link_cols, 
@@ -123,7 +124,7 @@ cc_circos <- function(cc_df, option = 'A', n_top_ints = 15, exp_df = NULL, cell_
         par(cex = cex)
         chordDiagram(input_df %>%
                        select(source_lig, target_rec, score), 
-                     directional = 1, group = grp, link.sort = TRUE, link.decreasing = F, diffHeight = 0.005, 
+                     directional = 1, group = grp, link.sort = F, diffHeight = 0.005, scale = scale,
                      direction.type = c("arrows"),link.arr.type = "triangle", annotationTrack = c(),
                      preAllocateTracks = list(list(track.height = 0.175),list(track.height = 0.05),list(track.height = 0.045)),                
                      big.gap = 3, transparency = 1, link.arr.lwd = arr_wd, link.arr.col = 'black', link.arr.length = 0.4, link.arr.width = 0.35)

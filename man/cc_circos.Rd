@@ -12,7 +12,8 @@ cc_circos(
   cell_cols = NULL,
   palette = "BuPu",
   cex = 1,
-  show_legend = TRUE
+  show_legend = TRUE,
+  scale = F
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ cc_circos(
 \item{cex}{Determines text size}
 
 \item{show_legend}{TRUE or FALSE - whether to add legend or not. Only required for options B and C.}
+
+\item{scale}{TRUE or FALSE - whether to scale each sector to same width. Only required for options B and C.}
 }
 \description{
 This function creates a circos plot
