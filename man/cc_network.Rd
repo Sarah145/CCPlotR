@@ -4,7 +4,13 @@
 \alias{cc_network}
 \title{Network Plot Function}
 \usage{
-cc_network(cc_df, colours = paletteMartin(), option = "A", n_top_ints = 20)
+cc_network(
+  cc_df,
+  colours = paletteMartin(),
+  option = "A",
+  n_top_ints = 20,
+  node_size = 2.75
+)
 }
 \arguments{
 \item{cc_df}{A dataframe with columns 'source', 'target', 'ligand', 'receptor' and 'score'. See \code{toy_data} for example.}
@@ -14,6 +20,8 @@ cc_network(cc_df, colours = paletteMartin(), option = "A", n_top_ints = 20)
 \item{option}{Either 'A' or 'B'. Option A will plot the number of interactions between pairs of cell types, option B will plot the top \code{n_top_ints} interactions and their scores.}
 
 \item{n_top_ints}{The number of top interactions to plot. Only required for option B.}
+
+\item{node_size}{Point size for nodes in option B.}
 }
 \description{
 This function plots a network of representing the number of interactions between cell types

@@ -11,6 +11,7 @@ library(scatterpie)
 #' @param option Either 'A' or 'B'. Option A will plot the number of interactions between pairs of cell types, option B will plot the top `n_top_ints` interactions and their scores. 
 #' @param n_top_ints The number of top interactions to plot. Only required for option B. 
 #' @param colours A vector of colours for each cell type. Default is `paletteMartin()`, a colourblind-friendly palette.
+#' @param node_size Point size for nodes in option B.
 #' @export
 #' @import dplyr ggplot2 ggraph scatterpie
 #' @importFrom igraph graph_from_data_frame layout_with_kk V
@@ -18,7 +19,7 @@ library(scatterpie)
 #' cc_network(toy_data)
 #' cc_network(toy_data, colours = c('orange', 'cornflowerblue', 'hotpink'), option = 'B')
 
-cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_ints = 20){
+cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_ints = 20, node_size = 2.75){
   if(option == 'A'){
     graph <- graph_from_data_frame(cc_df %>% group_by(source, target) %>% tally())
     ggraph(graph, layout = 'linear', circular = T) + 
@@ -64,7 +65,7 @@ cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_int
         cols = celltypes,
         data = graph_df,
         colour = NA,
-        pie_scale = 2.75
+        pie_scale = node_size
       ) + 
       geom_node_label(aes(label = name), fill = alpha('white', 0.7), size = 4, fontface = 'bold', repel = F) +
       scale_fill_manual(values = colours, name = 'Cell type') +
