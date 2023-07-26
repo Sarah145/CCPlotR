@@ -70,7 +70,7 @@ cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_int
       geom_node_label(aes(label = name), fill = alpha('white', 0.7), size = 4, fontface = 'bold', repel = F) +
       scale_fill_manual(values = colours, name = 'Cell type') +
       coord_fixed(clip='off') +
-      theme_graph(base_size = 14) +
+      theme_graph(base_size = 14, base_family="sans") +
       theme(legend.position = "bottom")
   } else {print('option must be either A or B')}
 }
