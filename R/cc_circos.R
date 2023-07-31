@@ -18,13 +18,20 @@ library(grid)
 #' @param scale TRUE or FALSE - whether to scale each sector to same width. Only required for options B and C.
 #' @export
 #' @import dplyr circlize ComplexHeatmap stringr grid
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom scales pretty_breaks
+#' @importFrom graphics par
+#' @importFrom stats setNames
 #' @examples
 #' cc_circos(toy_data)
 #' cc_circos(toy_data, option = 'B', n_top_ints = 10, cex = 0.5)
-#' cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), palette = 'PuRd', cex = 0.5)
+#' cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, 
+#' cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), 
+#' palette = 'PuRd', cex = 0.5)
 
 cc_circos <- function(cc_df, option = 'A', n_top_ints = 15, exp_df = NULL, cell_cols = NULL, palette = 'BuPu', cex = 1, show_legend = TRUE, scale = F){
-  if(option == 'A'){
+    target <- score <- ligand <- receptor <- source_lig <- target_rec <- cell_type <- gene <- cell_gene <- NULL
+    if(option == 'A'){
     input_df <- cc_df %>% mutate(source = factor(source), target = factor(target)) %>% group_by(source, target) %>% tally()
     if(is.null(cell_cols)){
       cell_cols <- setNames(paletteMartin(n = length(unique(c(input_df$source, input_df$target)))), unique(c(input_df$source, input_df$target)))} 

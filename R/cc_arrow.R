@@ -13,12 +13,15 @@ library(ggplot2)
 #' @param palette Which colour palette to use to show the mean expression. Should be one of the RColorBrewer sequential palettes. Only used for option B.
 #' @export
 #' @import dplyr ggplot2 
+#' @importFrom RColorBrewer brewer.pal
 #' @examples
 #' cc_arrow(toy_data, cell_types = c('B', 'CD8 T'), colours = c(`B` = 'hotpink', `CD8 T` = 'orange'))
-#' cc_arrow(toy_data, cell_types = c('NK', 'CD8 T'), option = 'B', exp_df = toy_exp, n_top_ints = 10, palette = 'OrRd')
+#' cc_arrow(toy_data, cell_types = c('NK', 'CD8 T'), option = 'B', exp_df = toy_exp, 
+#' n_top_ints = 10, palette = 'OrRd')
 #'
 
 cc_arrow <- function(cc_df, cell_types, option = 'A', n_top_ints = 15, exp_df = NULL, colours = setNames(paletteMartin(n = 2), cell_types), palette = 'BuPu'){
+  target <- score <- ligand <- receptor <- xpos1 <- xpos2 <- ypos1 <- ypos2 <- cell_type <- gene <- col1 <- col2 <- NULL
   if(option == 'A'){
     input_df <- cc_df %>% filter((source == cell_types[1] & target == cell_types[2]) | (source == cell_types[2] & target == cell_types[1])) %>%
       slice_max(order_by = score, n = n_top_ints)

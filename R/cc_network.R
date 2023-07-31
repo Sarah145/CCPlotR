@@ -20,6 +20,7 @@ library(scatterpie)
 #' cc_network(toy_data, colours = c('orange', 'cornflowerblue', 'hotpink'), option = 'B')
 
 cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_ints = 20, node_size = 2.75){
+  target <- from <- name <- score <- ligand <- receptor <- NULL
   if(option == 'A'){
     graph <- graph_from_data_frame(cc_df %>% group_by(source, target) %>% tally())
     ggraph(graph, layout = 'linear', circular = T) + 

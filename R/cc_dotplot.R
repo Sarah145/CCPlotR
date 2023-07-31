@@ -11,14 +11,16 @@ library(forcats)
 #' @param option Either 'A', 'B', 'CellPhoneDB' or 'Liana'. Option A will plot the number of interactions between pairs of cell types, option B will plot the top `n_top_ints` interactions and their scores. The 'CellPhoneDB' and 'Liana' options will generate a dotplot in the style of these popular tools. 
 #' @param n_top_ints The number of top interactions to plot. Only required for option B. 
 #' @export
-#' @import dplyr tidyr ggplot2 ggtext forcats grDevices
+#' @import dplyr tidyr ggplot2 ggtext forcats grDevices viridis
 #' @importFrom plyr round_any 
+#' @importFrom scales pretty_breaks
 #' @examples
 #' cc_dotplot(toy_data)
 #' cc_dotplot(toy_data, option = 'B', n_top_ints = 10)
 #' cc_dotplot(toy_data, option = 'Liana', n_top_ints = 15)
 
 cc_dotplot <- function(cc_df, option = 'A', n_top_ints = 30){
+  target <- score <- ligand <- receptor <- lr_pair <- cell_pair <- NULL
   if(option == 'A'){
     input_df <- cc_df %>% mutate(source = factor(source), target = factor(target)) %>% 
       group_by(source, target, .drop = F) %>% tally()
@@ -30,7 +32,7 @@ cc_dotplot <- function(cc_df, option = 'A', n_top_ints = 30){
       scale_y_discrete(name = 'Sender cell type\n', limits = rev(levels(input_df$source))) +
       scale_size(range = c(2,7), limits = c(round_any(min(input_df$n), 10, f = floor), round_any(max(input_df$n), 10, f = ceiling)), breaks = rev(brks), name = 'No. of\ninteractions')  +
       scale_fill_viridis_c(option = 'B', name = 'No. of\ninteractions', limits = c(round_any(min(input_df$n), 10, f = floor), round_any(max(input_df$n), 10, f = ceiling)), breaks = brks) +
-      guides(fill = 'none', size = guide_legend(override.aes = list(fill = viridis::inferno(n = length(brks), direction = -1)))) +
+      guides(fill = 'none', size = guide_legend(override.aes = list(fill = inferno(n = length(brks), direction = -1)))) +
       theme_minimal(base_size = 14) +
       theme(axis.line = element_blank(),
             axis.text = element_text(colour = 'black'),
@@ -47,7 +49,7 @@ cc_dotplot <- function(cc_df, option = 'A', n_top_ints = 30){
       geom_point(pch = 21) +
       scale_size(range = c(2,6), limits = c(min(brks), max(brks)), breaks = rev(brks), name = 'Score')  +
       scale_fill_viridis_c(option = 'B', limits = c(min(brks), max(brks)), name = 'Score',  breaks = brks, direction = -1) +
-      guides(fill = 'none', size = guide_legend(override.aes = list(fill = viridis::inferno(n = length(brks), direction = 1)))) +
+      guides(fill = 'none', size = guide_legend(override.aes = list(fill = inferno(n = length(brks), direction = 1)))) +
       labs(x = 'Sender cell type &rarr; Receiver cell type',
            y = 'Ligand|Receptor') +
       theme_minimal(base_size = 14) +
@@ -85,7 +87,7 @@ cc_dotplot <- function(cc_df, option = 'A', n_top_ints = 30){
       geom_point() +
       scale_size(range = c(2,6), limits = c(min(brks), max(brks)), breaks = rev(brks), name = 'Score')  +
       scale_colour_viridis_c(option = 'D', limits = c(min(brks), max(brks)), name = 'Score',  breaks = brks, direction = -1) +
-      guides(colour = 'none', size = guide_legend(override.aes = list(colour = viridis::viridis(n = length(brks), direction = 1)))) +
+      guides(colour = 'none', size = guide_legend(override.aes = list(colour = viridis(n = length(brks), direction = 1)))) +
       labs(title = 'Source', x = 'Target', y = 'Interactions (Ligand -> Receptor)') +
       facet_wrap(~source) +
       theme_bw(base_size = 14) +

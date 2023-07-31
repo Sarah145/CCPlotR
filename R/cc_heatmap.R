@@ -15,12 +15,14 @@ library(patchwork)
 #' @param n_top_ints The number of top interactions to plot. Only required for option B. 
 #' @export
 #' @import dplyr tidyr ggplot2 ggtext forcats tibble ggh4x patchwork
+#' @importFrom RColorBrewer brewer.pal
 #' @examples
 #' cc_heatmap(toy_data)
 #' cc_heatmap(toy_data, option = 'B', n_top_ints = 10)
 #' cc_heatmap(toy_data, option = 'CellPhoneDB')
 
 cc_heatmap <- function(cc_df, option = 'A', n_top_ints = 30){
+  target <- score <- ligand <- receptor <- lr_pair <- cell_pair <- cc <- cell1 <- cell2 <- n_ints <- total <- NULL
   if(option == 'A'){
     input_df <- cc_df %>% mutate(source = factor(source), target = factor(target)) %>% 
       group_by(source, target, .drop = F) %>% tally()

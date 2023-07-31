@@ -23,9 +23,11 @@ Imports:
     ggtext,
     ggh4x,
     patchwork,
+    RColorBrewer,
+    scales,
+    viridis,
     magrittr
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

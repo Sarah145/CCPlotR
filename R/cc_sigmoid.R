@@ -13,10 +13,12 @@ library(stringr)
 #' @import dplyr ggplot2 ggbump stringr
 #' @examples
 #' cc_sigmoid(toy_data)
-#' cc_sigmoid(toy_data, colours = c(`B` = 'hotpink', `CD8 T` = 'orange', `NK` = 'cornflowerblue'), n_top_ints = 25)
+#' cc_sigmoid(toy_data, colours = c(`B` = 'hotpink', `CD8 T` = 'orange', 
+#' `NK` = 'cornflowerblue'), n_top_ints = 25)
 #'
 
 cc_sigmoid <- function(cc_df, n_top_ints = 20, colours = paletteMartin()){
+  score <- ligand <- target <- receptor <- y1 <- y2 <- NULL
   input_df <- cc_df %>%
     slice_max(order_by = score, n = n_top_ints)
   
