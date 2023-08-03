@@ -9,7 +9,8 @@ cc_network(
   colours = paletteMartin(),
   option = "A",
   n_top_ints = 20,
-  node_size = 2.75
+  node_size = 2.75,
+  label_size = 4
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ cc_network(
 \item{n_top_ints}{The number of top interactions to plot. Only required for option B.}
 
 \item{node_size}{Point size for nodes in option B.}
+
+\item{label_size}{Size for labels in option B.}
 }
 \description{
 This function plots a network of representing the number of interactions between cell types

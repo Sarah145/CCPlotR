@@ -12,6 +12,7 @@ library(scatterpie)
 #' @param n_top_ints The number of top interactions to plot. Only required for option B. 
 #' @param colours A vector of colours for each cell type. Default is `paletteMartin()`, a colourblind-friendly palette.
 #' @param node_size Point size for nodes in option B.
+#' @param label_size Size for labels in option B.
 #' @export
 #' @import dplyr ggplot2 ggraph scatterpie
 #' @importFrom igraph graph_from_data_frame layout_with_kk V
@@ -19,7 +20,7 @@ library(scatterpie)
 #' cc_network(toy_data)
 #' cc_network(toy_data, colours = c('orange', 'cornflowerblue', 'hotpink'), option = 'B')
 
-cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_ints = 20, node_size = 2.75){
+cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_ints = 20, node_size = 2.75, label_size = 4){
   target <- from <- name <- score <- ligand <- receptor <- NULL
   if(option == 'A'){
     graph <- graph_from_data_frame(cc_df %>% group_by(source, target) %>% tally())
@@ -68,7 +69,7 @@ cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_int
         colour = NA,
         pie_scale = node_size
       ) + 
-      geom_node_label(aes(label = name), fill = alpha('white', 0.7), size = 4, fontface = 'bold', repel = F) +
+      geom_node_label(aes(label = name), fill = alpha('white', 0.7), size = label_size, fontface = 'bold', repel = F) +
       scale_fill_manual(values = colours, name = 'Cell type') +
       coord_fixed(clip='off') +
       theme_graph(base_size = 14, base_family="sans") +
