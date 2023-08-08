@@ -13,6 +13,9 @@ cc_dotplot(cc_df, option = "A", n_top_ints = 30)
 
 \item{n_top_ints}{The number of top interactions to plot. Only required for option B.}
 }
+\value{
+Returns a plot generated with the ggplot2 package
+}
 \description{
 This function plots a dotplot
 }

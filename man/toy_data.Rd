@@ -5,6 +5,15 @@
 \alias{toy_data}
 \title{Toy data for CCPlotR}
 \format{
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 735 rows and 5 columns.
+}
+\source{
+This is a modified version of the toy dataset that comes with the Liana R package.
+}
+\usage{
+toy_data
+}
+\value{
 \subsection{\code{toy_data}}{
 
 A data frame with 735 rows and 5 columns:
@@ -16,12 +25,6 @@ A data frame with 735 rows and 5 columns:
 \item{score}{A score for each interaction e.g. -log10(aggregate_rank) returned by Liana}
 }
 }
-}
-\source{
-This is a modified version of the toy dataset that comes with the Liana R package.
-}
-\usage{
-toy_data
 }
 \description{
 A toy dataset of ligand-receptor interactions to demonstrate cell-cell interaction plots.

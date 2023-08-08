@@ -13,6 +13,9 @@ cc_sigmoid(cc_df, n_top_ints = 20, colours = paletteMartin())
 
 \item{colours}{A named vector of colours for each cell type. Default is \code{paletteMartin()}, a colourblind-friendly palette.}
 }
+\value{
+Returns a plot generated with the ggplot2 package
+}
 \description{
 This function plots interactions using the \code{geom_sigmoid} function from the \code{ggbump} R package
 }

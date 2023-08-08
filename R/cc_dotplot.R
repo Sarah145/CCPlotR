@@ -1,9 +1,3 @@
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(ggtext)
-library(forcats)
-
 #' Dotplot Function
 #'
 #' This function plots a dotplot
@@ -14,6 +8,7 @@ library(forcats)
 #' @import dplyr tidyr ggplot2 ggtext forcats grDevices viridis
 #' @importFrom plyr round_any 
 #' @importFrom scales pretty_breaks
+#' @return Returns a plot generated with the ggplot2 package
 #' @examples
 #' cc_dotplot(toy_data)
 #' cc_dotplot(toy_data, option = 'B', n_top_ints = 10)
@@ -23,7 +18,7 @@ cc_dotplot <- function(cc_df, option = 'A', n_top_ints = 30){
   target <- score <- ligand <- receptor <- lr_pair <- cell_pair <- NULL
   if(option == 'A'){
     input_df <- cc_df %>% mutate(source = factor(source), target = factor(target)) %>% 
-      group_by(source, target, .drop = F) %>% tally()
+      group_by(source, target, .drop = FALSE) %>% tally()
     brks <- scales::pretty_breaks(n = 5)(c(round_any(min(input_df$n), 10, f = floor), round_any(max(input_df$n), 10, f = ceiling)))
     ggplot(input_df, 
            aes(x = target, y = source, fill = n, size = n)) +

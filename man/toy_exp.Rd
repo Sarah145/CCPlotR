@@ -5,6 +5,12 @@
 \alias{toy_exp}
 \title{Toy expression data for CCPlotR}
 \format{
+An object of class \code{grouped_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 477 rows and 3 columns.
+}
+\usage{
+toy_exp
+}
+\value{
 \subsection{\code{toy_exp}}{
 
 A data frame with 477 rows and 3 columns:
@@ -14,9 +20,6 @@ A data frame with 477 rows and 3 columns:
 \item{mean_exp}{Mean (normalised) expression of lignad/receptor gene in cell type}
 }
 }
-}
-\usage{
-toy_exp
 }
 \description{
 A dataframe showing the mean expression values for each ligand and receptor in each cell type.

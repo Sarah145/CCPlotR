@@ -29,6 +29,9 @@ cc_arrow(
 
 \item{palette}{Which colour palette to use to show the mean expression. Should be one of the RColorBrewer sequential palettes. Only used for option B.}
 }
+\value{
+Returns a plot generated with the ggplot2 package
+}
 \description{
 This function plots interactions between a pair of cell types
 }

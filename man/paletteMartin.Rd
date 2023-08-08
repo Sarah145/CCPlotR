@@ -9,6 +9,9 @@ paletteMartin(n = 15)
 \arguments{
 \item{n}{Number of colours to return. Max = 15.}
 }
+\value{
+Returns a vector of colours of length n.
+}
 \description{
 Generate a palette of up to 15 colours. The colours are from the paletteMartin palette in the colorBlindess R package.
 }

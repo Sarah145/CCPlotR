@@ -1,8 +1,3 @@
-library(dplyr)
-library(ggbump)
-library(ggplot2)
-library(stringr)
-
 #' Sigmoid Plot Function
 #'
 #' This function plots interactions using the `geom_sigmoid` function from the `ggbump` R package 
@@ -11,6 +6,7 @@ library(stringr)
 #' @param colours A named vector of colours for each cell type. Default is `paletteMartin()`, a colourblind-friendly palette.
 #' @export
 #' @import dplyr ggplot2 ggbump stringr
+#' @return Returns a plot generated with the ggplot2 package
 #' @examples
 #' cc_sigmoid(toy_data)
 #' cc_sigmoid(toy_data, colours = c(`B` = 'hotpink', `CD8 T` = 'orange', 
@@ -33,8 +29,8 @@ cc_sigmoid <- function(cc_df, n_top_ints = 20, colours = paletteMartin()){
     annotate('text', x = c(-0.5,1.5), y = as.factor(round(max(c(source_ligands, target_receptors))/2)), label = c('Ligand', 'Receptor'), angle = c(90, 270), size = 6) +
     annotate('text', x = -0.05, y = as.factor(source_ligands), label = str_extract(names(source_ligands), '[^|]+$'), hjust = 1) +
     annotate('text', x = 1.05, y = as.factor(target_receptors), label = str_extract(names(target_receptors), '[^|]+$'), hjust = 0) +
-    geom_point(aes(col = source, x = 0, y = as.factor(y1)), show.legend = T, pch = 15, size = 7) +
-    geom_point(aes(col = target, x = 1, y = as.factor(y2)), show.legend = F, pch = 15, size = 7) +
+    geom_point(aes(col = source, x = 0, y = as.factor(y1)), show.legend = TRUE, pch = 15, size = 7) +
+    geom_point(aes(col = target, x = 1, y = as.factor(y2)), show.legend = FALSE, pch = 15, size = 7) +
     scale_x_continuous(limits = c(-0.5, 1.5)) +
     scale_y_discrete(limits = as.factor(seq(max(source_ligands, target_receptors), 0, -1))) +
     scale_colour_manual(values = colours, breaks = unique(c(input_df$source, input_df$target)), name = 'Cell type') +

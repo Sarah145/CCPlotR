@@ -1,9 +1,3 @@
-library(dplyr)
-library(ggplot2)
-library(ggraph)
-library(igraph)
-library(scatterpie)
-
 #' Network Plot Function
 #'
 #' This function plots a network of representing the number of interactions between cell types
@@ -16,6 +10,7 @@ library(scatterpie)
 #' @export
 #' @import dplyr ggplot2 ggraph scatterpie
 #' @importFrom igraph graph_from_data_frame layout_with_kk V
+#' @return Returns a plot generated with the ggplot2 package
 #' @examples
 #' cc_network(toy_data)
 #' cc_network(toy_data, colours = c('orange', 'cornflowerblue', 'hotpink'), option = 'B')
@@ -24,20 +19,20 @@ cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_int
   target <- from <- name <- score <- ligand <- receptor <- NULL
   if(option == 'A'){
     graph <- graph_from_data_frame(cc_df %>% group_by(source, target) %>% tally())
-    ggraph(graph, layout = 'linear', circular = T) + 
+    ggraph(graph, layout = 'linear', circular = TRUE) + 
       geom_edge_loop(aes(edge_width = n, color = as.factor(from)), end_cap = circle(20, 'pt'),
                      arrow = arrow(length = unit(5, 'mm'), angle = 20, type = 'closed'), 
-                     show.legend = F) +
+                     show.legend = FALSE) +
       geom_edge_fan(aes(edge_width = n, color = as.factor(from)), 
                     arrow = arrow(length = unit(5, 'mm'), angle = 20, type = 'closed'), 
                     end_cap = circle(20, 'pt'), 
-                    show.legend = F) +
+                    show.legend = FALSE) +
       geom_node_label(aes(label = name, col = name), 
                       #fill = alpha('white', 0.3), 
-                      size = 6, fontface = 'bold', show.legend = F, label.size = 2) +
+                      size = 6, fontface = 'bold', show.legend = FALSE, label.size = 2) +
       geom_node_label(aes(label = name), 
                       #fill = alpha('white', 0.3), 
-                      size = 6, fontface = 'bold', show.legend = F, label.size = 0, col = 'black') +
+                      size = 6, fontface = 'bold', show.legend = FALSE, label.size = 0, col = 'black') +
       scale_edge_colour_manual(values = ifelse(rep(is.null(names(colours)),length(colours)), colours, unname(colours[sort(unique(cc_df$source))]))) +
       scale_colour_manual(values = colours) +
       scale_edge_width(range = c(0.5,4)) +
@@ -59,17 +54,17 @@ cc_network <- function(cc_df, colours = paletteMartin(), option = 'A', n_top_int
     }
     ggraph(graph, "manual", x = V(graph)$x, y = V(graph)$y) +
       geom_edge_loop(arrow = arrow(length = unit(2.5, 'mm'), angle = 20, type = 'closed'), 
-                     show.legend = F, check_overlap = T, end_cap = circle(20, 'pt')) +
+                     show.legend = FALSE, check_overlap = TRUE, end_cap = circle(20, 'pt')) +
       geom_edge_fan(arrow = arrow(length = unit(2.5, 'mm'), angle = 20, type = 'closed'), 
-                    end_cap = circle(20, 'pt'), check_overlap = T,
-                    show.legend = F) +
+                    end_cap = circle(20, 'pt'), check_overlap = TRUE,
+                    show.legend = FALSE) +
       geom_scatterpie(
         cols = celltypes,
         data = graph_df,
         colour = NA,
         pie_scale = node_size
       ) + 
-      geom_node_label(aes(label = name), fill = alpha('white', 0.7), size = label_size, fontface = 'bold', repel = F) +
+      geom_node_label(aes(label = name), fill = alpha('white', 0.7), size = label_size, fontface = 'bold', repel = FALSE) +
       scale_fill_manual(values = colours, name = 'Cell type') +
       coord_fixed(clip='off') +
       theme_graph(base_size = 14, base_family="sans") +

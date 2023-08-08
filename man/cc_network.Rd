@@ -26,6 +26,9 @@ cc_network(
 
 \item{label_size}{Size for labels in option B.}
 }
+\value{
+Returns a plot generated with the ggplot2 package
+}
 \description{
 This function plots a network of representing the number of interactions between cell types
 }

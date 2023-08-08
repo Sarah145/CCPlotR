@@ -4,6 +4,7 @@
 #'
 #' @param n Number of colours to return. Max = 15.
 #' @export
+#' @return Returns a vector of colours of length n.
 #' @examples
 #' scales::show_col(paletteMartin(n=9))
 

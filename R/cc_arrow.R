@@ -1,6 +1,3 @@
-library(dplyr)
-library(ggplot2)
-
 #' Paired Arrow Plot Function
 #'
 #' This function plots interactions between a pair of cell types
@@ -14,6 +11,7 @@ library(ggplot2)
 #' @export
 #' @import dplyr ggplot2 
 #' @importFrom RColorBrewer brewer.pal
+#' @return Returns a plot generated with the ggplot2 package
 #' @examples
 #' cc_arrow(toy_data, cell_types = c('B', 'CD8 T'), colours = c(`B` = 'hotpink', `CD8 T` = 'orange'))
 #' cc_arrow(toy_data, cell_types = c('NK', 'CD8 T'), option = 'B', exp_df = toy_exp, 
@@ -68,10 +66,10 @@ cc_arrow <- function(cc_df, cell_types, option = 'A', n_top_ints = 15, exp_df = 
       geom_point(aes(x = xpos2 + xrange/40, y = ypos2), col = colours[cell_types[2]], pch = 15, size = 4.25) +
       geom_segment(data = input_df %>% filter(source == cell_types[1]), 
                    aes(x = xpos1, xend = xpos2, y = ypos1, yend = ypos2, linewidth = score),
-                   arrow = arrow(length = unit(3.5, 'mm'), type = 'closed'), show.legend = F) +
+                   arrow = arrow(length = unit(3.5, 'mm'), type = 'closed'), show.legend = FALSE) +
       geom_segment(data = input_df %>% filter(source == cell_types[2]), 
                    aes(x = xpos2, xend = xpos1, y = ypos2, yend = ypos1, linewidth = score),
-                   arrow = arrow(length = unit(3.5, 'mm'), type = 'closed'), show.legend = F) +
+                   arrow = arrow(length = unit(3.5, 'mm'), type = 'closed'), show.legend = FALSE) +
       annotate('text', x = c(min(xpos_1) - xrange/6.5,  max(xpos_2) + xrange/6.5), y = scaler/2, 
                label = cell_types, size = 6, angle = c(90,270), col = colours[cell_types]) +
       annotate('text', x = xpos_1 - xrange/15, y = ypos_1, label = cell1_lr, hjust = 1) +
@@ -135,19 +133,19 @@ cc_arrow <- function(cc_df, cell_types, option = 'A', n_top_ints = 15, exp_df = 
         geom_point(aes(x = xpos2 + xrange/38, y = ypos2, fill = col2), col = 'black', pch = 22, size = 6) +
         geom_segment(data = input_df %>% filter(source == cell_types[1]), 
                      aes(x = xpos1, xend = xpos2, y = ypos1, yend = ypos2, linewidth = score),
-                     arrow = arrow(length = unit(3.5, 'mm'), type = 'closed'), show.legend = F) +
+                     arrow = arrow(length = unit(3.5, 'mm'), type = 'closed'), show.legend = FALSE) +
         geom_segment(data = input_df %>% filter(source == cell_types[2]), 
                      aes(x = xpos2, xend = xpos1, y = ypos2, yend = ypos1, linewidth = score),
-                     arrow = arrow(length = unit(3.5, 'mm'), type = 'closed'), show.legend = F) +
+                     arrow = arrow(length = unit(3.5, 'mm'), type = 'closed'), show.legend = FALSE) +
         annotate('text', x = c(min(xpos_1) - xrange/6.5,  max(xpos_2) + xrange/6.5), y = scaler/2, label = cell_types, size = 6, angle = c(90,270)) +
         annotate('text', x = xpos_1 - xrange/15, y = ypos_1, label = cell1_lr, hjust = 1) +
         annotate('text', x = xpos_2 + xrange/15, y = ypos_2, label = cell2_lr, hjust = 0) +
         scale_fill_stepsn(colours = RColorBrewer::brewer.pal(8, palette), 
-                          name = 'Mean expression', n.breaks = 8, show.limits = T) +
+                          name = 'Mean expression', n.breaks = 8, show.limits = TRUE) +
         scale_linewidth(range = c(0.1,1.2)) +
         scale_y_reverse() +
         scale_x_continuous(limits = c(min(xpos_1) - xrange/4.5, max(xpos_2) + xrange/4.5)) +
-        guides(fill = guide_coloursteps(frame.colour = 'black', frame.linewidth = 0.4, ticks = F, show.limits = T)) +
+        guides(fill = guide_coloursteps(frame.colour = 'black', frame.linewidth = 0.4, ticks = FALSE, show.limits = TRUE)) +
         theme_void(base_size = 14) +
         theme(plot.margin = margin(10,20,10,20),
               legend.key.width = unit(dev.size()[1] / 9, "inches"),
