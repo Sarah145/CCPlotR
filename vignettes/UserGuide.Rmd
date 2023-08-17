@@ -10,7 +10,7 @@ author:
 output:
   BiocStyle::html_document:
     toc_float: true
-#bibliography: references.bib
+bibliography: references.bib
 vignette: |
   %\VignetteIndexEntry{User Guide}
   %\VignetteEncoding{UTF-8}
@@ -33,7 +33,7 @@ This guide provides an overview of the CCPlotR package, a small R package for vi
 
 ## Motivation
 
-Predicting cell-cell interactions from scRNA-seq data is now a common component of a single-cell analysis workflow. There have been many tools published in recent years specifically for this purpose. These tools typically return a table of predicted interactions that depicts the sending and receiving cell type, the ligand and receptor genes and some sort of score for ranking the interactions. These tables can be quite large and depending on the amount of cell types included in the analysis, this data can get pretty complex and challenging to visualise. Many tools for predicting cell-cell interactions have built-in visualisation methods but some don't and it can be time consuming and impractical to install some of these methods just for the purpose of visualising the results if you're using a different tool to predict the interactions. For these reasons, we have developed a lightweight R package that allows the user to easily generate visualisations of cell-cell interactions with minimal code, regardless of which tool was used for predicting the interactions. 
+Predicting cell-cell interactions from scRNA-seq data is now a common component of a single-cell analysis workflow (@armingol_deciphering_2021, @almet_landscape_2021). There have been many tools published in recent years specifically for this purpose (@dimitrov_comparison_2022, @efremova_cellphonedb_2020, @hou_predicting_2020, @jin_inference_2021). These tools typically return a table of predicted interactions that depicts the sending and receiving cell type, the ligand and receptor genes and some sort of score for ranking the interactions. These tables can be quite large and depending on the amount of cell types included in the analysis, this data can get pretty complex and challenging to visualise. Many tools for predicting cell-cell interactions have built-in visualisation methods but some don't and it can be time consuming and impractical to install some of these methods just for the purpose of visualising the results if you're using a different tool to predict the interactions. For these reasons, we have developed a lightweight R package that allows the user to easily generate visualisations of cell-cell interactions with minimal code, regardless of which tool was used for predicting the interactions. 
 
 
 # Input
@@ -142,16 +142,36 @@ cc_sigmoid(toy_data)
 
 # Customising plots
 
-All plotting functions with the exception of `cc_circos` are built on top of ggplot2 so it's easy to customise and modify the plots to the users preferences. The `cc_circos` function uses the circlize package to generate to the plots so more information about them can be found [here](https://jokergoo.github.io/circlize_book/book/).
-
 By default, CCPlotR uses a colour palette that contains 15 colourblind-friendly colours.
+
 
 ```{r palette, fig.height=5, fig.width=5}
 scales::show_col(paletteMartin())
 ```
+
+Because all plotting functions (with the exception of `cc_circos`) are built on top of ggplot2, it's easy to customise and modify the plots according to the users preferences. Colours, fonts and themes can easily be updated using the usual ggplot2 syntax.
+
+```{r themes, fig.height=12, fig.width=12}
+library(ggplot2)
+library(patchwork)
+p1 <- cc_network(toy_data, option = 'B') + labs(title = 'Default')
+p2 <- cc_network(toy_data, option = 'B') + scale_fill_manual(values = rainbow(3)) + labs(title = 'Update colours')
+p3 <- cc_network(toy_data, option = 'B') + theme_grey() + labs(title = 'Update theme')
+p4 <- cc_network(toy_data, option = 'B') + theme(legend.position = 'top') + labs(title = 'Update legend position')
+
+p1 + p2 + p3 + p4
+```
+
+
+
+The `cc_circos` function uses the circlize package to generate to the plots so more information about them can be found [here](https://jokergoo.github.io/circlize_book/book/).
+
 
 # Session Info
 
 ```{r}
 sessionInfo()
 ```
+
+
+# References
