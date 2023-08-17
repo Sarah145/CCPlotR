@@ -108,3 +108,4 @@ cc_sigmoid(toy_data)
 ```
 
 <img src="https://github.com/Sarah145/CCPlotR/blob/main/plots/sigmoid.png">
+

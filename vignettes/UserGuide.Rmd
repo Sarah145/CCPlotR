@@ -1,10 +1,23 @@
 ---
 title: "CCPlotR"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{my-vignette}
-  %\VignetteEngine{knitr::rmarkdown}
+author:
+  - name: Sarah Ennis
+    affiliation: University of Galway
+  - name: Pilib Ó Broin
+    affiliation: University of Galway
+  - name: Eva Szegezdi
+    affiliation: University of Galway
+output:
+  BiocStyle::html_document:
+    toc_float: true
+#bibliography: references.bib
+vignette: |
+  %\VignetteIndexEntry{User Guide}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 80
 ---
 
 ```{r, include=FALSE}
@@ -14,24 +27,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-# User's Guide
-
-### Sarah Ennis<sup>1,2,3</sup>, Pilib Ó Broin<sup>1,2</sup>, Eva Szegezdi<sup>1,3</sup>
-
-<sup>1</sup> The SFI Centre for Research Training in Genomics Data Science, Galway, Ireland  
-<sup>2</sup> School of Mathematical & Statistical Sciences, University of Galway, Galway, Ireland  
-<sup>3</sup> School of Biological & Chemical Sciences, University of Galway, Galway, Ireland  
-
-----
-
-
-## Introduction
+# Introduction
 
 This guide provides an overview of the CCPlotR package, a small R package for visualising results from tools that predict cell-cell interactions from scRNA-seq data. 
 
------
+## Motivation
 
-## Input
+Predicting cell-cell interactions from scRNA-seq data is now a common component of a single-cell analysis workflow. There have been many tools published in recent years specifically for this purpose. These tools typically return a table of predicted interactions that depicts the sending and receiving cell type, the ligand and receptor genes and some sort of score for ranking the interactions. These tables can be quite large and depending on the amount of cell types included in the analysis, this data can get pretty complex and challenging to visualise. Many tools for predicting cell-cell interactions have built-in visualisation methods but some don't and it can be time consuming and impractical to install some of these methods just for the purpose of visualising the results if you're using a different tool to predict the interactions. For these reasons, we have developed a lightweight R package that allows the user to easily generate visualisations of cell-cell interactions with minimal code, regardless of which tool was used for predicting the interactions. 
+
+
+# Input
 
 CCPlotR makes generic plots that can be used to visualise results from multiple tools such as Liana, CellPhoneDB, NATMI etc. All it requires as input is a dataframe with columns `source`, `target`, `ligand`, `receptor` and `score`. It should look something like this:
 
@@ -44,6 +49,8 @@ CCPlotR makes generic plots that can be used to visualise results from multiple 
 | NK     | B      | LGALS1   | CD69     | 4.15  |
 | B      | CD8 T  | ICAM3    | ITGAL    | 2.34  |
 
+
+
 For some of the plots, there is an option to also show the expression of the ligands and receptors in each cell type. For those plots, a second dataframe is required, which holds the mean expression values for each gene in each cell type and should look something like this:
 
 | cell_type | gene   | mean_exp |
@@ -55,22 +62,24 @@ For some of the plots, there is an option to also show the expression of the lig
 | B         | ADCY7  | 0.0336   |
 | B         | ADRB2  | 0.0178   |
 
+
+
 The package comes with toy datasets (`toy_data`, `toy_exp`) which you can see for examples of input data.
 
 ```{r preview_data}
 library(CCPlotR)
 head(toy_data)
+head(toy_exp)
 ```
 
------
 
-## Plot types
+# Plot types
 
 The package contains functions for making six types of plots: `cc_heatmap`, `cc_dotplot`, `cc_network`, `cc_circos`, `cc_arrow` and `cc_sigmoid`. Below are some examples of each plot type.
 
-### Heatmaps (`cc_heatmap`)
+## Heatmaps
 
-This function can generate heatmaps in four different styles. Option A just displays the total number of interactions between each pair of cell types and option B shows the ligands, receptors and cell types involved in each interaction as well as their score. For option B, only a small portion of top interactions are shown to avoid cluttering the plot. There is also an option to generate heatmaps in the style of popular cell-cell interaction prediction tools such as CellPhoneDB and Liana.
+The `cc_heatmap` function can generate heatmaps in four different styles. Option A just displays the total number of interactions between each pair of cell types and option B shows the ligands, receptors and cell types involved in each interaction as well as their score. For option B, only a small portion of top interactions are shown to avoid cluttering the plot. There is also an option to generate heatmaps in the style of popular cell-cell interaction prediction tools such as CellPhoneDB and Liana.
 
 ```{r heatmaps, fig.width=7, fig.height=7}
 cc_heatmap(toy_data)
@@ -78,9 +87,9 @@ cc_heatmap(toy_data, option = 'B', n_top_ints = 10)
 cc_heatmap(toy_data, option = 'CellPhoneDB')
 ```
 
-### Dotplots (`cc_dotplot`)
+## Dotplots 
 
-This function can generate dotplots in four different styles. Option A just displays the total number of interactions between each pair of cell types and option B shows the ligands, receptors and cell types involved in each interaction as well as their score. For option B, only a small portion of top interactions are shown to avoid cluttering the plot. There is also an option to generate dotplots in the style of popular cell-cell interaction prediction tools such as CellPhoneDB and Liana.
+The `cc_dotplot` function can generate dotplots in four different styles. Option A just displays the total number of interactions between each pair of cell types and option B shows the ligands, receptors and cell types involved in each interaction as well as their score. For option B, only a small portion of top interactions are shown to avoid cluttering the plot. There is also an option to generate dotplots in the style of popular cell-cell interaction prediction tools such as CellPhoneDB and Liana.
 
 ```{r dotplots, fig.width=7, fig.height=5}
 cc_dotplot(toy_data)
@@ -89,9 +98,9 @@ cc_dotplot(toy_data, option = 'Liana', n_top_ints = 15)
 ```
 
 
-### Network (`cc_network`)
+## Network
 
-This function can generate two different types of network plots. In option A, the nodes are cell types and the weight of the edges corresponds to the total number of interactions between a given pair of cell types. In option B, the nodes are ligand and receptor genes, coloured by which cell type is expressing them. For option B, only a small portion of top interactions are shown to avoid cluttering the plot. 
+The `cc_network` function can generate two different types of network plots. In option A, the nodes are cell types and the weight of the edges corresponds to the total number of interactions between a given pair of cell types. In option B, the nodes are ligand and receptor genes, coloured by which cell type is expressing them. For option B, only a small portion of top interactions are shown to avoid cluttering the plot. 
 
 ```{r network, fig.width=8, fig.height=7.5}
 cc_network(toy_data)
@@ -99,9 +108,9 @@ cc_network(toy_data, colours = c('orange', 'cornflowerblue', 'hotpink'), option 
 ```
 
 
-#### Circos plot (`cc_circos`)
+## Circos plot
 
-This function can generate three different types of circos plots. Option A generates a circos plot where the width of the links represents the total number of interactions between each pair of cell types. Option B generates a circos plot showing the ligands, receptors and cell types involved in the top portion of interactions. Option C expands on option B by also showing the mean expression of the ligand and receptor genes in each cell type. In options B and C, the weight of the links represents the score of the interaction.
+The `cc_circos` function can generate three different types of circos plots. Option A generates a circos plot where the width of the links represents the total number of interactions between each pair of cell types. Option B generates a circos plot showing the ligands, receptors and cell types involved in the top portion of interactions. Option C expands on option B by also showing the mean expression of the ligand and receptor genes in each cell type. In options B and C, the weight of the links represents the score of the interaction.
 
 ```{r circos1, fig.width=5, fig.height=5}
 cc_circos(toy_data)
@@ -112,9 +121,9 @@ cc_circos(toy_data, option = 'B', n_top_ints = 10, cex = 0.75)
 cc_circos(toy_data, option = 'C', n_top_ints = 15, exp_df = toy_exp, cell_cols = c(`B` = 'hotpink', `NK` = 'orange', `CD8 T` = 'cornflowerblue'), palette = 'PuRd', cex = 0.75)
 ```
 
-### Paired arrow plot (`cc_arrow`)
+## Paired arrow plot
 
-This function generates plots showing the interactions between a given pair of cell types. Option A just shows which ligands/receptors are interacting between a pair of cell types and option B also shows the expression of the ligand/receptor genes in each cell type. In both options, the weight of the arrow represents the score of the interaction.
+The `cc_arrow` function generates plots showing the interactions between a given pair of cell types. Option A just shows which ligands/receptors are interacting between a pair of cell types and option B also shows the expression of the ligand/receptor genes in each cell type. In both options, the weight of the arrow represents the score of the interaction.
 
 ```{r arrows, fig.width=8, fig.height=5.5}
 cc_arrow(toy_data, cell_types = c('B', 'CD8 T'), colours = c(`B` = 'hotpink', `CD8 T` = 'orange'))
@@ -122,18 +131,16 @@ cc_arrow(toy_data, cell_types = c('NK', 'CD8 T'), option = 'B', exp_df = toy_exp
 ```
 
 
-### Sigmoid plot (`cc_sigmoid`)
+## Sigmoid plot
 
-This function plots a portion of interactions using the `geom_sigmoid` function from the `ggbump` R package to connect ligands in sender cells to receptors in receiver cells.
+The `cc_sigmoid` function plots a portion of interactions using the `geom_sigmoid` function from the `ggbump` R package to connect ligands in sender cells to receptors in receiver cells.
 
 ```{r sigmoid, fig.height=6, fig.width=8}
 cc_sigmoid(toy_data)
 ```
 
 
------
-
-## Customising plots
+# Customising plots
 
 All plotting functions with the exception of `cc_circos` are built on top of ggplot2 so it's easy to customise and modify the plots to the users preferences. The `cc_circos` function uses the circlize package to generate to the plots so more information about them can be found [here](https://jokergoo.github.io/circlize_book/book/).
 
@@ -143,3 +150,8 @@ By default, CCPlotR uses a colour palette that contains 15 colourblind-friendly 
 scales::show_col(paletteMartin())
 ```
 
+# Session Info
+
+```{r}
+sessionInfo()
+```
