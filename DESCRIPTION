@@ -4,6 +4,8 @@ Version: 0.99.1
 Authors@R: 
     person("Sarah", "Ennis", , "ennissarah94@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-6100-8573"))
+Author:  Sarah Ennis [aut, cre], Pilib Ó Broin [aut], Eva Szegezdi [aut]
+Maintainer: Sarah Ennis <s.ennis6@universityofgalway.ie>
 Description: CCPlotR is an R package for visualising results from tools that predict cell-cell interactions from single-cell RNA-seq data. These plots are generic and can be used to visualise results from multiple tools such as Liana, CellPhoneDB, NATMI etc. 
 Imports:
     plyr,
@@ -29,13 +31,14 @@ Imports:
     grDevices,
     graphics,
     stats
-License: MIT + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    BiocStyle
 VignetteBuilder: knitr
 biocViews: SingleCell, Network, Visualization, CellBiology, SystemsBiology
