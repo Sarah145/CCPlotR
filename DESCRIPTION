@@ -1,11 +1,11 @@
 Package: CCPlotR
 Title: Plots For Visualising Cell-Cell Interactions
 Version: 0.99.1
-Authors@R: 
-    person("Sarah", "Ennis", , "ennissarah94@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-6100-8573"))
-Author:  Sarah Ennis [aut, cre], Pilib Ó Broin [aut], Eva Szegezdi [aut]
-Maintainer: Sarah Ennis <s.ennis6@universityofgalway.ie>
+Authors@R: c(
+    person("Sarah", "Ennis", email = "ennissarah94@gmail.com", role = c("aut", "cre"), 
+           comment = c(ORCID = "0000-0001-6100-8573")),
+    person("Pilib", "Ó Broin", email = "p.obroin@universityofgalway.ie", role = c("aut")),
+    person("Eva", "Szegezdi", email = "eva.szegezdi@universityofgalway.ie", role = c("aut")))
 Description: CCPlotR is an R package for visualising results from tools that predict cell-cell interactions from single-cell RNA-seq data. These plots are generic and can be used to visualise results from multiple tools such as Liana, CellPhoneDB, NATMI etc. 
 Imports:
     plyr,
@@ -31,7 +31,7 @@ Imports:
     grDevices,
     graphics,
     stats
-License: GPL-3
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
