@@ -10,6 +10,7 @@
 #' @param cex Determines text size
 #' @param show_legend TRUE or FALSE - whether to add legend or not. Only required for options B and C.
 #' @param scale TRUE or FALSE - whether to scale each sector to same width. Only required for options B and C.
+#' @param ... Additional parameters passed to `chordDiagram` function.
 #' @export
 #' @import dplyr circlize ComplexHeatmap stringr grid
 #' @importFrom RColorBrewer brewer.pal
@@ -25,7 +26,7 @@
 #'     cell_cols = c(`B` = "hotpink", `NK` = "orange", `CD8 T` = "cornflowerblue"),
 #'     palette = "PuRd", cex = 0.5
 #' )
-cc_circos <- function(cc_df, option = "A", n_top_ints = 15, exp_df = NULL, cell_cols = NULL, palette = "BuPu", cex = 1, show_legend = TRUE, scale = FALSE) {
+cc_circos <- function(cc_df, option = "A", n_top_ints = 15, exp_df = NULL, cell_cols = NULL, palette = "BuPu", cex = 1, show_legend = TRUE, scale = FALSE, ...) {
     target <- score <- ligand <- receptor <- source_lig <- target_rec <- cell_type <- gene <- cell_gene <- NULL
     if (option == "A") {
         input_df <- cc_df %>%
@@ -36,14 +37,13 @@ cc_circos <- function(cc_df, option = "A", n_top_ints = 15, exp_df = NULL, cell_
             cell_cols <- setNames(paletteMartin(n = length(unique(c(input_df$source, input_df$target)))), unique(c(input_df$source, input_df$target)))
         }
         circlize_plot <- function() {
-            circos.clear()
             par(cex = cex)
             chordDiagram(input_df,
                 scale = FALSE, grid.col = cell_cols,
                 annotationTrack = c("grid", "name"), directional = 1, direction.type = c("arrows", "diffHeight"), link.arr.type = "big.arrow", link.arr.length = 0.1, diffHeight = -mm_h(0.5), preAllocateTracks = list(
                     track.height = mm_h(10),
                     track.margin = c(mm_h(2), -mm_h(4))
-                )
+                ), ...
             )
         }
     } else if (option == "B") {
@@ -77,7 +77,6 @@ cc_circos <- function(cc_df, option = "A", n_top_ints = 15, exp_df = NULL, cell_
             background = cell_cols[unique(c(input_df$source, input_df$target))]
         )
         circlize_plot <- function() {
-            circos.clear()
             par(cex = cex)
             chordDiagram(
                 input_df %>%
@@ -86,7 +85,7 @@ cc_circos <- function(cc_df, option = "A", n_top_ints = 15, exp_df = NULL, cell_
                 direction.type = c("arrows"), link.arr.type = "triangle", annotationTrack = c(),
                 preAllocateTracks = list(list(track.height = 0.175), list(track.height = 0.05)),
                 big.gap = 3, transparency = 1, link.arr.lwd = arr_wd, link.arr.col = link_cols,
-                link.arr.length = 0.4, link.arr.width = 0.35
+                link.arr.length = 0.4, link.arr.width = 0.35, ...
             )
             circos.track(track.index = 1, panel.fun = function(x, y) {
                 circos.text(CELL_META$xcenter, CELL_META$ylim[1], str_extract(CELL_META$sector.index, "[^|]+$"),
@@ -147,7 +146,6 @@ cc_circos <- function(cc_df, option = "A", n_top_ints = 15, exp_df = NULL, cell_
             col_fun = gene_col_fun, title = "Mean exp."
         )
         circlize_plot <- function() {
-            circos.clear()
             par(cex = cex)
             chordDiagram(
                 input_df %>%
@@ -155,7 +153,7 @@ cc_circos <- function(cc_df, option = "A", n_top_ints = 15, exp_df = NULL, cell_
                 directional = 1, group = grp, link.sort = FALSE, diffHeight = 0.005, scale = scale,
                 direction.type = c("arrows"), link.arr.type = "triangle", annotationTrack = c(),
                 preAllocateTracks = list(list(track.height = 0.175), list(track.height = 0.05), list(track.height = 0.045)),
-                big.gap = 3, transparency = 1, link.arr.lwd = arr_wd, link.arr.col = "black", link.arr.length = 0.4, link.arr.width = 0.35
+                big.gap = 3, transparency = 1, link.arr.lwd = arr_wd, link.arr.col = "black", link.arr.length = 0.4, link.arr.width = 0.35, ...
             )
             circos.track(track.index = 1, panel.fun = function(x, y) {
                 circos.text(CELL_META$xcenter, CELL_META$ylim[1], str_extract(CELL_META$sector.index, "[^|]+$"),

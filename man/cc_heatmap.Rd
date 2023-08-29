@@ -21,6 +21,6 @@ This plots a heatmap
 }
 \examples{
 cc_heatmap(toy_data)
-cc_heatmap(toy_data, option = 'B', n_top_ints = 10)
-cc_heatmap(toy_data, option = 'CellPhoneDB')
+cc_heatmap(toy_data, option = "B", n_top_ints = 10)
+cc_heatmap(toy_data, option = "CellPhoneDB")
 }

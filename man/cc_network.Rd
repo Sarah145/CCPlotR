@@ -34,5 +34,5 @@ This function plots a network of representing the number of interactions between
 }
 \examples{
 cc_network(toy_data)
-cc_network(toy_data, colours = c('orange', 'cornflowerblue', 'hotpink'), option = 'B')
+cc_network(toy_data, colours = c("orange", "cornflowerblue", "hotpink"), option = "B")
 }

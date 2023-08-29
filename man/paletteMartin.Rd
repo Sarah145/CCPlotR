@@ -16,5 +16,5 @@ Returns a vector of colours of length n.
 Generate a palette of up to 15 colours. The colours are from the paletteMartin palette in the colorBlindess R package.
 }
 \examples{
-scales::show_col(paletteMartin(n=9))
+scales::show_col(paletteMartin(n = 9))
 }

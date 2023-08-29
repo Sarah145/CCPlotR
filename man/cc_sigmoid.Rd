@@ -21,7 +21,9 @@ This function plots interactions using the \code{geom_sigmoid} function from the
 }
 \examples{
 cc_sigmoid(toy_data)
-cc_sigmoid(toy_data, colours = c(`B` = 'hotpink', `CD8 T` = 'orange', 
-`NK` = 'cornflowerblue'), n_top_ints = 25)
+cc_sigmoid(toy_data, colours = c(
+    `B` = "hotpink", `CD8 T` = "orange",
+    `NK` = "cornflowerblue"
+), n_top_ints = 25)
 
 }

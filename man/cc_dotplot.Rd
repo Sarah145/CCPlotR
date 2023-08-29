@@ -21,6 +21,6 @@ This function plots a dotplot
 }
 \examples{
 cc_dotplot(toy_data)
-cc_dotplot(toy_data, option = 'B', n_top_ints = 10)
-cc_dotplot(toy_data, option = 'Liana', n_top_ints = 15)
+cc_dotplot(toy_data, option = "B", n_top_ints = 10)
+cc_dotplot(toy_data, option = "Liana", n_top_ints = 15)
 }
