@@ -46,7 +46,7 @@ cc_network <- function(cc_df, colours = paletteMartin(), option = "A", n_top_int
     } else if (option == "B") {
         input_df <- cc_df %>% slice_max(order_by = score, n = n_top_ints)
         graph <- graph_from_data_frame(input_df %>% select(ligand, receptor, score))
-        xy <- ifelse(layout == 'nicely', eval(parse(text = 'layout_nicely(graph)')), eval(parse(text = paste0('layout_with_', layout, '(graph)'))))
+        xy <- eval(parse(text = ifelse(layout == 'nicely', 'layout_nicely(graph)', paste0('layout_with_', layout, '(graph)'))))
         igraph::V(graph)$x <- xy[, 1]
         igraph::V(graph)$y <- xy[, 2]
         graph_df <- igraph::as_data_frame(graph, "vertices")
