@@ -7,14 +7,15 @@
 #' @param colours A vector of colours for each cell type. Default is `paletteMartin()`, a colourblind-friendly palette.
 #' @param node_size Point size for nodes in option B.
 #' @param label_size Size for labels in option B.
+#' @param layout Algorithm for determining layout in option B. One of 'dh', 'drl', 'fr', 'gem', 'graphopt', 'kk', 'lgl', 'mds', 'sugiyama'. See iGraph layouts for more details.
 #' @export
-#' @import dplyr ggplot2 ggraph scatterpie
-#' @importFrom igraph graph_from_data_frame layout_with_kk V
+#' @import dplyr ggplot2 ggraph scatterpie 
+#' @importFrom igraph graph_from_data_frame layout_with_dh layout_with_drl layout_with_fr layout_with_gem layout_with_graphopt layout_with_kk layout_with_lgl layout_with_mds layout_with_sugiyama V
 #' @return Returns a plot generated with the ggplot2 package
 #' @examples
 #' cc_network(toy_data)
 #' cc_network(toy_data, colours = c("orange", "cornflowerblue", "hotpink"), option = "B")
-cc_network <- function(cc_df, colours = paletteMartin(), option = "A", n_top_ints = 20, node_size = 2.75, label_size = 4) {
+cc_network <- function(cc_df, colours = paletteMartin(), option = "A", n_top_ints = 20, node_size = 2.75, label_size = 4, layout = 'kk') {
     target <- from <- name <- score <- ligand <- receptor <- NULL
     if (option == "A") {
         graph <- graph_from_data_frame(cc_df %>% group_by(source, target) %>% tally())
@@ -45,7 +46,7 @@ cc_network <- function(cc_df, colours = paletteMartin(), option = "A", n_top_int
     } else if (option == "B") {
         input_df <- cc_df %>% slice_max(order_by = score, n = n_top_ints)
         graph <- graph_from_data_frame(input_df %>% select(ligand, receptor, score))
-        xy <- layout_with_kk(graph)
+        xy <- eval(parse(text = paste0('layout_with_', layout, '(graph)')))
         igraph::V(graph)$x <- xy[, 1]
         igraph::V(graph)$y <- xy[, 2]
         graph_df <- igraph::as_data_frame(graph, "vertices")

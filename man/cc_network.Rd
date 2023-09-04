@@ -10,7 +10,8 @@ cc_network(
   option = "A",
   n_top_ints = 20,
   node_size = 2.75,
-  label_size = 4
+  label_size = 4,
+  layout = "kk"
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ cc_network(
 \item{node_size}{Point size for nodes in option B.}
 
 \item{label_size}{Size for labels in option B.}
+
+\item{layout}{Algorithm for determining layout in option B. One of 'dh', 'drl', 'fr', 'gem', 'graphopt', 'kk', 'lgl', 'mds', 'sugiyama'. See iGraph layouts for more details.}
 }
 \value{
 Returns a plot generated with the ggplot2 package
