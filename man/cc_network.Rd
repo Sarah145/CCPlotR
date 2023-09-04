@@ -27,7 +27,7 @@ cc_network(
 
 \item{label_size}{Size for labels in option B.}
 
-\item{layout}{Algorithm for determining layout in option B. One of 'dh', 'drl', 'fr', 'gem', 'graphopt', 'kk', 'lgl', 'mds', 'sugiyama'. See iGraph layouts for more details.}
+\item{layout}{Algorithm for determining layout in option B. One of 'dh', 'drl', 'fr', 'gem', 'graphopt', 'kk', 'lgl', 'mds', 'nicely'. See iGraph layouts for more details.}
 }
 \value{
 Returns a plot generated with the ggplot2 package
