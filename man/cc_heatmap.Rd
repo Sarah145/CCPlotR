@@ -20,6 +20,7 @@ Returns a plot generated with the ggplot2 package
 This plots a heatmap
 }
 \examples{
+data(toy_data, package = 'CCPlotR')
 cc_heatmap(toy_data)
 cc_heatmap(toy_data, option = "B", n_top_ints = 10)
 cc_heatmap(toy_data, option = "CellPhoneDB")

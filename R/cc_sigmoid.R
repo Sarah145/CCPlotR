@@ -6,8 +6,10 @@
 #' @param colours A named vector of colours for each cell type. Default is `paletteMartin()`, a colourblind-friendly palette.
 #' @export
 #' @import dplyr ggplot2 ggbump stringr
+#' @importFrom methods is
 #' @return Returns a plot generated with the ggplot2 package
 #' @examples
+#' data(toy_data, package = 'CCPlotR')
 #' cc_sigmoid(toy_data)
 #' cc_sigmoid(toy_data, colours = c(
 #'     `B` = "hotpink", `CD8 T` = "orange",
@@ -15,7 +17,12 @@
 #' ), n_top_ints = 25)
 #'
 cc_sigmoid <- function(cc_df, n_top_ints = 20, colours = paletteMartin()) {
+    # check input 
+    stopifnot("'cc_df' must be a dataframe" = is(cc_df, "data.frame"))
+    stopifnot("cc_df should contain columns named source, target, ligand, receptor and score. See `toy_data` for an example." = all(c('source', 'target', 'ligand', 'receptor', 'score') %in% colnames(cc_df)))
+    
     score <- ligand <- target <- receptor <- y1 <- y2 <- NULL
+    
     input_df <- cc_df %>%
         slice_max(order_by = score, n = n_top_ints)
 

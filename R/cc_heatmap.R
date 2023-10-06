@@ -7,12 +7,19 @@
 #' @export
 #' @import dplyr tidyr ggplot2 ggtext forcats tibble ggh4x patchwork
 #' @importFrom RColorBrewer brewer.pal
+#' @importFrom methods is
 #' @return Returns a plot generated with the ggplot2 package
 #' @examples
+#' data(toy_data, package = 'CCPlotR')
 #' cc_heatmap(toy_data)
 #' cc_heatmap(toy_data, option = "B", n_top_ints = 10)
 #' cc_heatmap(toy_data, option = "CellPhoneDB")
 cc_heatmap <- function(cc_df, option = "A", n_top_ints = 30) {
+    # check input 
+    stopifnot("'cc_df' must be a dataframe" = is(cc_df, "data.frame"))
+    stopifnot("cc_df should contain columns named source, target, ligand, receptor and score. See `toy_data` for an example." = all(c('source', 'target', 'ligand', 'receptor', 'score') %in% colnames(cc_df)))
+    stopifnot("option must be either 'A', 'B', 'CellPhoneDB' or 'Liana'" = option %in% c('A', 'B', 'CellPhoneDB', 'Liana'))
+    
     target <- score <- ligand <- receptor <- lr_pair <- cell_pair <- cc <- cell1 <- cell2 <- n_ints <- total <- NULL
     if (option == "A") {
         input_df <- cc_df %>%
@@ -149,7 +156,5 @@ cc_heatmap <- function(cc_df, option = "A", n_top_ints = 30) {
                 plot.margin = margin(t = 0, r = 0)
             )
         (p1 + plot_spacer() + plot_layout(widths = c(1.7, 0.3))) / (p3 + p2 + plot_layout(widths = c(1.7, 0.3))) + plot_layout(heights = c(0.3, 1.7), guides = "collect")
-    } else {
-        print("option must be either 'A', 'B', 'CellPhoneDB' or 'Liana'")
-    }
+    } 
 }

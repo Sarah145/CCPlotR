@@ -11,11 +11,18 @@
 #' @export
 #' @import dplyr ggplot2 ggraph scatterpie 
 #' @importFrom igraph graph_from_data_frame layout_with_dh layout_with_drl layout_with_fr layout_with_gem layout_with_graphopt layout_with_kk layout_with_lgl layout_with_mds layout_nicely V
+#' @importFrom methods is
 #' @return Returns a plot generated with the ggplot2 package
 #' @examples
+#' data(toy_data, package = 'CCPlotR')
 #' cc_network(toy_data)
 #' cc_network(toy_data, colours = c("orange", "cornflowerblue", "hotpink"), option = "B")
 cc_network <- function(cc_df, colours = paletteMartin(), option = "A", n_top_ints = 20, node_size = 2.75, label_size = 4, layout = 'kk') {
+    # check input 
+    stopifnot("'cc_df' must be a dataframe" = is(cc_df, "data.frame"))
+    stopifnot("cc_df should contain columns named source, target, ligand, receptor and score. See `toy_data` for an example." = all(c('source', 'target', 'ligand', 'receptor', 'score') %in% colnames(cc_df)))
+    stopifnot("option must be either A or B" = option %in% c('A', 'B'))
+    
     target <- from <- name <- score <- ligand <- receptor <- NULL
     if (option == "A") {
         graph <- graph_from_data_frame(cc_df %>% group_by(source, target) %>% tally())
@@ -78,7 +85,5 @@ cc_network <- function(cc_df, colours = paletteMartin(), option = "A", n_top_int
             coord_fixed(clip = "off") +
             theme_graph(base_size = 14, base_family = "sans") +
             theme(legend.position = "bottom")
-    } else {
-        print("option must be either A or B")
-    }
+    } 
 }

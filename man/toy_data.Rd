@@ -11,7 +11,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 This is a modified version of the toy dataset that comes with the Liana R package.
 }
 \usage{
-toy_data
+data(toy_data)
 }
 \value{
 \subsection{\code{toy_data}}{

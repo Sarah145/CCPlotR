@@ -1,5 +1,5 @@
 ---
-title: "CCPlotR"
+title: "Generating visualisations of cell-cell interactions with CCPlotR"
 author:
   - name: Sarah Ennis
     affiliation: University of Galway
@@ -35,6 +35,21 @@ This guide provides an overview of the CCPlotR package, a small R package for vi
 
 Predicting cell-cell interactions from scRNA-seq data is now a common component of a single-cell analysis workflow (@armingol_deciphering_2021, @almet_landscape_2021). There have been many tools published in recent years specifically for this purpose (@dimitrov_comparison_2022, @efremova_cellphonedb_2020, @hou_predicting_2020, @jin_inference_2021). These tools typically return a table of predicted interactions that depicts the sending and receiving cell type, the ligand and receptor genes and some sort of score for ranking the interactions. These tables can be quite large and depending on the amount of cell types included in the analysis, this data can get pretty complex and challenging to visualise. Many tools for predicting cell-cell interactions have built-in visualisation methods but some don't and it can be time consuming and impractical to install some of these methods just for the purpose of visualising the results if you're using a different tool to predict the interactions. For these reasons, we have developed a lightweight R package that allows the user to easily generate visualisations of cell-cell interactions with minimal code, regardless of which tool was used for predicting the interactions. 
 
+## Installation
+
+```{r eval=FALSE}
+
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("CCPlotR")
+
+## or for development version:
+
+devtools::install_github("Sarah145/CCPlotR")
+
+```
+
 
 # Input
 
@@ -68,6 +83,7 @@ The package comes with toy datasets (`toy_data`, `toy_exp`) which you can see fo
 
 ```{r preview_data}
 library(CCPlotR)
+data(toy_data, toy_exp, package = 'CCPlotR')
 head(toy_data)
 head(toy_exp)
 ```

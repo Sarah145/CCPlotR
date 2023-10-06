@@ -8,7 +8,7 @@
 An object of class \code{grouped_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 477 rows and 3 columns.
 }
 \usage{
-toy_exp
+data(toy_exp)
 }
 \value{
 \subsection{\code{toy_exp}}{

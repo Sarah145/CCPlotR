@@ -20,6 +20,7 @@ Returns a plot generated with the ggplot2 package
 This function plots a dotplot
 }
 \examples{
+data(toy_data, package = 'CCPlotR')
 cc_dotplot(toy_data)
 cc_dotplot(toy_data, option = "B", n_top_ints = 10)
 cc_dotplot(toy_data, option = "Liana", n_top_ints = 15)

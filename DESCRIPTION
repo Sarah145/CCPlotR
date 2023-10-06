@@ -1,6 +1,6 @@
 Package: CCPlotR
 Title: Plots For Visualising Cell-Cell Interactions
-Version: 0.99.2
+Version: 0.99.3
 Authors@R: c(
     person("Sarah", "Ennis", email = "ennissarah94@gmail.com", role = c("aut", "cre"), 
            comment = c(ORCID = "0000-0001-6100-8573")),
@@ -30,15 +30,20 @@ Imports:
     viridis,
     grDevices,
     graphics,
-    stats
+    stats,
+    methods
+URL: https://github.com/Sarah145/CCPlotR
+BugReports: https://github.com/Sarah145/CCPlotR/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown,
-    BiocStyle
+    BiocStyle,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 biocViews: SingleCell, Network, Visualization, CellBiology, SystemsBiology
+Config/testthat/edition: 3

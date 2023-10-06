@@ -33,7 +33,15 @@ The package comes with toy datasets (`toy_data`, `toy_exp`) which you can see fo
 The R package can be installed by running:
 
 ```R
+# install development version
 devtools::install_github("Sarah145/CCPlotR")
+
+# or install from Bioconductor
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
+
+BiocManager::install("CCPlotR")
 ```
 
 ### Plot types
@@ -46,6 +54,7 @@ This function can generate heatmaps in four different styles. Option A just disp
 
 ```R
 library(CCPlotR)
+data(toy_data, toy_exp, package = 'CCPlotR')
 cc_heatmap(toy_data)
 cc_heatmap(toy_data, option = 'B', n_top_ints = 10)
 cc_heatmap(toy_data, option = 'CellPhoneDB')

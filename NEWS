@@ -1,0 +1,14 @@
+Changes in version 0.99.1 (2023-08-18)
++ Submitted to Bioconductor
+
+Changes in version 0.99.2 (2023-09-19)
++ Added extra optional paramaters to cc_circos and cc_network functions
+ 
+Changes in version 0.99.3 (2023-10-06)
++ Made changes to address Bioconductor reviews
++ added unit tests
++ added validity checks and helpful error messages for function arguments
++ set Lazydata to false
+
+
+

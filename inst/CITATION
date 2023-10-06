@@ -1,0 +1,18 @@
+citHeader("To cite CCPlotR in publications, use:")
+
+bibentry(
+    bibtype = "Article",
+    title = "CCPlotR: An R package for the visualization of cell-cell interactions",
+    author = personList(
+        as.person("Sarah Ennis"),
+        as.person("Pilib Ó Broin"),
+        as.person("Eva Szegezdi")
+    ),
+    journal = "Bioinformatics Advances",
+    volume = "3",
+    pages = "vbad130",
+    year = "2023",
+    doi = "10.1093/bioadv/vbad130",
+    URL = "https://doi.org/10.1093/bioadv/vbad130",
+    eprint = "https://doi.org/10.1093/bioadv/vbad130"
+)

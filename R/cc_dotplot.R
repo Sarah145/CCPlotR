@@ -8,12 +8,18 @@
 #' @import dplyr tidyr ggplot2 ggtext forcats grDevices viridis
 #' @importFrom plyr round_any
 #' @importFrom scales pretty_breaks
+#' @importFrom methods is
 #' @return Returns a plot generated with the ggplot2 package
 #' @examples
+#' data(toy_data, package = 'CCPlotR')
 #' cc_dotplot(toy_data)
 #' cc_dotplot(toy_data, option = "B", n_top_ints = 10)
 #' cc_dotplot(toy_data, option = "Liana", n_top_ints = 15)
 cc_dotplot <- function(cc_df, option = "A", n_top_ints = 30) {
+    stopifnot("'cc_df' must be a dataframe" = is(cc_df, "data.frame"))
+    stopifnot("cc_df should contain columns named source, target, ligand, receptor and score. See `toy_data` for an example." = all(c('source', 'target', 'ligand', 'receptor', 'score') %in% colnames(cc_df)))
+    stopifnot("option must be either 'A', 'B', 'CellPhoneDB' or 'Liana'" = option %in% c('A', 'B', 'CellPhoneDB', 'Liana'))
+    
     target <- score <- ligand <- receptor <- lr_pair <- cell_pair <- NULL
     if (option == "A") {
         input_df <- cc_df %>%
@@ -108,7 +114,5 @@ cc_dotplot <- function(cc_df, option = "A", n_top_ints = 30) {
                 axis.text.x = element_text(colour = "#E69F00", face = "bold"),
                 plot.title = element_text(hjust = 0.5)
             )
-    } else {
-        print("option must be either 'A', 'B', 'CellPhoneDB' or 'Liana'")
-    }
+    } 
 }

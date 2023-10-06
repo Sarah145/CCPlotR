@@ -36,6 +36,7 @@ Returns a plot generated with the ggplot2 package
 This function plots a network of representing the number of interactions between cell types
 }
 \examples{
+data(toy_data, package = 'CCPlotR')
 cc_network(toy_data)
 cc_network(toy_data, colours = c("orange", "cornflowerblue", "hotpink"), option = "B")
 }

@@ -10,16 +10,25 @@
 #' @param palette Which colour palette to use to show the mean expression. Should be one of the RColorBrewer sequential palettes. Only used for option B.
 #' @export
 #' @import dplyr ggplot2
-#' @importFrom RColorBrewer brewer.pal
+#' @importFrom RColorBrewer brewer.pal 
+#' @importFrom methods is
 #' @return Returns a plot generated with the ggplot2 package
 #' @examples
+#' data(toy_data, toy_exp, package = 'CCPlotR')
 #' cc_arrow(toy_data, cell_types = c("B", "CD8 T"), colours = c(`B` = "hotpink", `CD8 T` = "orange"))
 #' cc_arrow(toy_data,
 #'     cell_types = c("NK", "CD8 T"), option = "B", exp_df = toy_exp,
 #'     n_top_ints = 10, palette = "OrRd"
 #' )
 #'
-cc_arrow <- function(cc_df, cell_types, option = "A", n_top_ints = 15, exp_df = NULL, colours = setNames(paletteMartin(n = 2), cell_types), palette = "BuPu") {
+cc_arrow <- function(cc_df, cell_types = NULL, option = "A", n_top_ints = 15, exp_df = NULL, colours = setNames(paletteMartin(n = 2), cell_types), palette = "BuPu") {
+    stopifnot("'cc_df' must be a dataframe" = is(cc_df, "data.frame"))
+    stopifnot("cc_df should contain columns named source, target, ligand, receptor and score. See `toy_data` for an example." = all(c('source', 'target', 'ligand', 'receptor', 'score') %in% colnames(cc_df)))
+    stopifnot("option must be either 'A', 'B'" = option %in% c('A', 'B'))
+    stopifnot("'cell_types' must be a character vector specifying which 2 cell types to plot" = is(cell_types, 'character'))
+    stopifnot("Only 2 cell types can be specified" = length(cell_types) == 2)
+    stopifnot("Check cc_df contains specified cell types" = all(cell_types %in% unique(c(cc_df$source, cc_df$target))))
+    
     target <- score <- ligand <- receptor <- xpos1 <- xpos2 <- ypos1 <- ypos2 <- cell_type <- gene <- col1 <- col2 <- NULL
     if (option == "A") {
         input_df <- cc_df %>%
@@ -93,9 +102,9 @@ cc_arrow <- function(cc_df, cell_types, option = "A", n_top_ints = 15, exp_df = 
             theme(plot.margin = margin(10, 20, 10, 20)) +
             coord_cartesian(clip = "off")
     } else if (option == "B") {
-        if (is.null(exp_df)) {
-            print("exp_df is required for option B")
-        }
+        stopifnot("'exp_df' must be a dataframe" = is(exp_df, "data.frame"))
+        stopifnot("exp_df should contain columns named cell_type, gene and mean_exp. See `toy_exp` for an example." = all(c('cell_type', 'gene', 'mean_exp') %in% colnames(exp_df)))
+        
 
         input_df <- cc_df %>%
             filter((source == cell_types[1] & target == cell_types[2]) | (source == cell_types[2] & target == cell_types[1])) %>%
@@ -180,7 +189,5 @@ cc_arrow <- function(cc_df, cell_types, option = "A", n_top_ints = 15, exp_df = 
                 legend.position = "bottom"
             ) +
             coord_cartesian(clip = "off")
-    } else {
-        (print("option must be either A or B"))
-    }
+    } 
 }

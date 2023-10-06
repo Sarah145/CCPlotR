@@ -20,6 +20,7 @@ Returns a plot generated with the ggplot2 package
 This function plots interactions using the \code{geom_sigmoid} function from the \code{ggbump} R package
 }
 \examples{
+data(toy_data, package = 'CCPlotR')
 cc_sigmoid(toy_data)
 cc_sigmoid(toy_data, colours = c(
     `B` = "hotpink", `CD8 T` = "orange",
