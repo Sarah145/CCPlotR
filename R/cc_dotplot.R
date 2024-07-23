@@ -84,7 +84,7 @@ cc_dotplot <- function(cc_df, option = "A", n_top_ints = 30) {
         ggplot(input_df, aes(x = cell_pair, y = lr_pair, col = score, size = score)) +
             geom_point() +
             scale_colour_gradientn(colours = pal) +
-            scale_size(range = c(2, 6), limits = c(min(brks), max(brks)), breaks = rev(brks), name = "Score") +
+            scale_size(range = c(2, 6), limits = c(min(brks), max(brks)), breaks = brks, name = "Score") +
             guides(colour = "none", size = guide_legend(override.aes = list(colour = colorRampPalette(pal)(length(brks))))) +
             theme_linedraw(base_size = 14) +
             theme(
